@@ -243,7 +243,7 @@ Todo esto queda cubierto por los tests de las Functions.
 - con 300 clientes de prueba, buscar por las primeras letras responde en menos de 1 segundo;
 - el panel cuadra con las visitas, también después de deshacer un sello.
 
-**Estado (2026-10-02): hecha, sin commit.** Probada en el navegador con `npm run seed -- --muchos`.
+**Estado (2026-10-02): hecha (`b722615`).** Probada en el navegador con `npm run seed -- --muchos`.
 El nombre solo se busca por el principio (no por el apellido) y un teléfono sin prefijo se toma como
 español (+34). El panel lee el mes y el total con una consulta de rango sobre `stats`, porque las
 reglas rechazan el `get` de un mes que todavía no tiene documento.
@@ -272,6 +272,18 @@ reglas rechazan el `get` de un mes que todavía no tiene documento.
 
 **Hecho cuando** un cliente que entró por correo verifica su teléfono y le aparecen las tarjetas
 que el dueño le había creado a mano. Nadie más puede verlas.
+
+**Estado (2026-10-02): hecha.** Probada en el navegador: Juan (correo) añade en
+`/perfil` el teléfono de una ficha manual y su tarjeta pasa de 8 a 9 sellos. Lo que falta o se
+simplificó:
+- **Sesión larga en iPhone:** aplazada. Una web añadida a la pantalla de inicio no tiene el límite
+  de 7 días de Safari, así que el atajo ya lo cubre en la mayoría de casos.
+- El aviso para instalar sale en cuanto hay una tarjeta, no solo tras el primer sello. En Android
+  solo aparece si el navegador lanza `beforeinstallprompt`.
+- `claimPhoneCards` hace una sola transacción (límite de 500 escrituras), no tiene en cuenta la
+  caducidad de los sellos ni `stats`, y una visita juntada ya no se puede deshacer si su tarjeta
+  se fusionó.
+- Al cambiar el nombre en el perfil, las fichas de los comercios lo actualizan en el siguiente sello.
 
 ## Fase 6 — Administración
 

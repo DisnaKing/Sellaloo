@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Link, Navigate } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 import { AuthProvider, RequireRole, useSession, type Role } from './auth';
+import './lib/install';
 import './styles.css';
 
 function Home() {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
   { path: '/negocio/clientes/:memberId', lazy: guarded('owner', () => import('./pages/Member')) },
   { path: '/q/:token', lazy: guarded('customer', () => import('./pages/Redeem')) },
   { path: '/tarjetas', lazy: guarded('customer', () => import('./pages/Cards')) },
+  { path: '/perfil', lazy: guarded('customer', () => import('./pages/Profile')) },
   { path: '*', element: <Navigate to="/" replace /> },
 ]);
 

@@ -6,17 +6,17 @@
 
 ## Objetivo actual
 
-- **Fase 4 terminada, sin commit** (estado en `docs/roadmap.md`). Esperando al usuario: commit y
-  siguiente fase solo cuando lo pida.
+- **Fase 6 (administración) en curso.** Commit y siguiente fase solo cuando lo pida el usuario;
+  estado en `docs/roadmap.md`.
 
 ## Estado
 
-- [x] Fase 1 (`34f6915`): QR de extremo a extremo, CI y docs.
-- [x] Fase 2: callables `addMember`, `stampByPhone`, `undoLastVisit`, `redeemReward`; web y tests.
-- [x] Commit de la fase 2 (`4f78344`).
-- [x] Fase 3 (`90ff097`): `createBusiness`, asistente `/negocio/alta`, `/negocio/ajustes`, logo.
-- [x] Fase 4: `/negocio/clientes` (panel y búsqueda) y `/negocio/clientes/:memberId` (ficha).
-- [ ] Commit de la fase 4 y repositorio en GitHub: **esperan el OK del usuario**.
+- [x] Fases 1 a 4 con commit (`34f6915`, `4f78344`, `90ff097`, `b722615`).
+- [x] Fase 5: `/tarjetas` con casillas y aviso de instalar, `/perfil`, `claimPhoneCards` y
+  `deleteAccount`.
+- [x] Commit de la fase 5.
+- [ ] Repositorio en GitHub: **espera el OK del usuario**.
+- [ ] Pregunta pendiente: emuladores en `0.0.0.0` para probar desde el móvil.
 - [ ] Desplegar la base en Spark (fase 0): necesita el proyecto real de Firebase.
 
 ## Contexto relevante
@@ -26,6 +26,7 @@
 - Los tests de emulador llaman a los handlers directamente (`functions/test/helpers.ts`).
 - Las consultas del dueño sobre `cards` tienen que filtrar por `ownerUid`, o las reglas las rechazan.
 - Sin comprobar todavía: las TTL de `firestore.indexes.json` al desplegar.
+- Tras vincular teléfono o correo hay que renovar el token (`getIdToken(true)`): las reglas lo comparan.
 - Seed: `dueno@demo.es` (dueño de `demo-cafe`), `juan@demo.es` (8 sellos, sin teléfono),
   `admin@demo.es` y María por SMS (`+34600000001`, 3 sellos). Contraseña en la salida del seed.
 - El seed no escribe `stats`: el panel sale a cero hasta que se dan sellos.

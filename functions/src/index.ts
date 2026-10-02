@@ -1,6 +1,7 @@
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { onCall } from 'firebase-functions/v2/https';
 import { db } from './admin.js';
+import { handleClaimPhoneCards, handleDeleteAccount } from './handlers/account.js';
 import { handleCreateBusiness } from './handlers/createBusiness.js';
 import { handleIssueQr } from './handlers/issueQr.js';
 import { handleAddMember, handleStampByPhone } from './handlers/phone.js';
@@ -25,3 +26,7 @@ export const undoLastVisit = onCall((req) => handleUndoLastVisit({ db, now: new 
 export const redeemReward = onCall((req) => handleRedeemReward({ db, now: new Date() }, req.auth?.uid, req.data));
 
 export const createBusiness = onCall((req) => handleCreateBusiness({ db, now: new Date() }, req.auth?.uid, req.data));
+
+export const claimPhoneCards = onCall((req) => handleClaimPhoneCards({ db, now: new Date() }, req.auth?.uid));
+
+export const deleteAccount = onCall((req) => handleDeleteAccount({ db, now: new Date() }, req.auth?.uid));

@@ -1,17 +1,19 @@
 import {
   createUserWithEmailAndPassword,
+  linkWithPhoneNumber,
   RecaptchaVerifier,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
   type ConfirmationResult,
+  type User,
 } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useState, type FormEvent } from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router';
 import { COLLECTIONS } from '@shared/model';
 import { useSession } from '../auth';
-import { auth, db, errorMessage } from '../lib/firebase';
+import { auth, claimPhoneCards, db, errorMessage } from '../lib/firebase';
 
 /** Pasa «600 00 00 01» a «+34600000001»; si ya lleva prefijo, lo respeta. */
 function toE164(raw: string): string {
@@ -19,7 +21,7 @@ function toE164(raw: string): string {
   return digits.startsWith('+') ? digits : `+34${digits}`;
 }
 
-type Run = (action: () => Promise<unknown>) => Promise<void>;
+export type Run = (action: () => Promise<unknown>) => Promise<void>;
 
 export default function CustomerLogin() {
   const session = useSession();
@@ -56,7 +58,10 @@ export default function CustomerLogin() {
           <button className="secondary" onClick={() => setMode('email')}>Con mi correo</button>
         </>
       ) : mode === 'phone' ? (
-        <PhoneForm run={run} busy={busy} />
+        <>
+          <h1>Con mi teléfono</h1>
+          <PhoneForm run={run} busy={busy} />
+        </>
       ) : (
         <EmailForm run={run} busy={busy} setMessage={setMessage} />
       )}
@@ -65,23 +70,29 @@ export default function CustomerLogin() {
   );
 }
 
-function PhoneForm({ run, busy }: { run: Run; busy: boolean }) {
+/** Entra con el teléfono o, con `link`, se lo añade a esa cuenta y luego llama a `onDone`. */
+export function PhoneForm({ run, busy, link, onDone }: { run: Run; busy: boolean; link?: User; onDone?: () => Promise<void> }) {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null);
 
   function submit(e: FormEvent) {
     e.preventDefault();
-    if (confirmation) return run(() => confirmation.confirm(code));
+    if (confirmation)
+      return run(async () => {
+        await confirmation.confirm(code);
+        await onDone?.();
+      });
     return run(async () => {
       const verifier = new RecaptchaVerifier(auth, 'recaptcha', { size: 'invisible' });
-      setConfirmation(await signInWithPhoneNumber(auth, toE164(phone), verifier));
+      setConfirmation(
+        await (link ? linkWithPhoneNumber(link, toE164(phone), verifier) : signInWithPhoneNumber(auth, toE164(phone), verifier)),
+      );
     });
   }
 
   return (
     <form onSubmit={submit}>
-      <h1>Con mi teléfono</h1>
       {confirmation ? (
         <label>
           Código del SMS
@@ -93,7 +104,7 @@ function PhoneForm({ run, busy }: { run: Run; busy: boolean }) {
           <input type="tel" autoComplete="tel" placeholder="600 000 000" required value={phone} onChange={(e) => setPhone(e.target.value)} />
         </label>
       )}
-      <button disabled={busy}>{confirmation ? 'Entrar' : 'Enviarme el código'}</button>
+      <button disabled={busy}>{confirmation ? (link ? 'Guardar' : 'Entrar') : 'Enviarme el código'}</button>
       <div id="recaptcha" />
     </form>
   );
@@ -146,7 +157,13 @@ function ProfileForm({ run, busy }: { run: Run; busy: boolean }) {
         privacyAcceptedAt: serverTimestamp(),
         createdAt: serverTimestamp(),
       });
-      await session.refresh();
+      try {
+        // Junta las fichas que algún comercio le hizo a mano con este teléfono.
+        // ponytail: si falla, esas tarjetas esperan; Perfil no ofrece reintentarlo.
+        if (phoneNumber) await claimPhoneCards();
+      } finally {
+        await session.refresh();
+      }
     });
   }
 

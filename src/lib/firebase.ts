@@ -7,6 +7,7 @@ import {
   REGION,
   type AddMemberRequest,
   type AddMemberResponse,
+  type ClaimPhoneCardsResponse,
   type CreateBusinessRequest,
   type CreateBusinessResponse,
   type ErrorReason,
@@ -57,6 +58,8 @@ export const stampByPhone = httpsCallable<StampByPhoneRequest, StampByPhoneRespo
 export const undoLastVisit = httpsCallable<UndoLastVisitRequest, UndoLastVisitResponse>(functions, 'undoLastVisit');
 export const createBusiness = httpsCallable<CreateBusinessRequest, CreateBusinessResponse>(functions, 'createBusiness');
 export const redeemReward = httpsCallable<RedeemRewardRequest, void>(functions, 'redeemReward');
+export const claimPhoneCards = httpsCallable<void, ClaimPhoneCardsResponse>(functions, 'claimPhoneCards');
+export const deleteAccount = httpsCallable<void, void>(functions, 'deleteAccount');
 
 const MESSAGES: Record<ErrorReason, string> = {
   'unauthenticated': 'Tienes que entrar primero.',
@@ -107,6 +110,8 @@ const AUTH_MESSAGES: Record<string, string> = {
   'auth/invalid-email': 'Ese correo no es válido.',
   'auth/invalid-phone-number': 'Ese teléfono no es válido.',
   'auth/invalid-verification-code': 'El código no es correcto.',
+  'auth/credential-already-in-use': 'Ese teléfono o correo ya es de otra cuenta.',
+  'auth/provider-already-linked': 'Tu cuenta ya lo tiene.',
   'auth/too-many-requests': 'Demasiados intentos. Espera un poco.',
   'auth/network-request-failed': 'Sin conexión. Revisa tu internet.',
 };

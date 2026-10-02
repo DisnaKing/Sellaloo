@@ -72,6 +72,14 @@
         { "fieldPath": "memberId", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "members",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "phone", "order": "ASCENDING" },
+        { "fieldPath": "customerId", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": [

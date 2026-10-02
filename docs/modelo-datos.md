@@ -40,6 +40,10 @@ qué de cada colección y quién puede leerla.
 - El admin lo lee todo.
 - Nadie escribe en `cards`, `visits`, `qrTokens` ni `dailyVisits` desde el cliente.
 
+- `deleteAccount` borra `customers/{uid}` y el usuario de Auth. Sus fichas se quedan en los
+  comercios con `customerId` nulo, el nombre «Cliente eliminado» y sin teléfono, y sus tarjetas
+  pierden `customerId` y `customerPhone`. Así cuadran los totales del panel.
+
 Los tests están en `tests/rules/firestore.test.ts` (`npm run test:rules`).
 
 ## Cloud Storage (`storage.rules`)
@@ -60,3 +64,5 @@ Los tests están en `tests/rules/storage.test.ts`.
 - `members` (subcolección): `ownerUid` + `rewardsPending`, para la lista «Premios pendientes»;
   `ownerUid` + `lastVisitAt` descendente, `ownerUid` + `searchName` y `ownerUid` + `phone`, para la
   lista y la búsqueda de clientes.
+- `members` (grupo de colecciones): `phone` + `customerId`, para que `claimPhoneCards` encuentre
+  las fichas manuales de un teléfono en todos los comercios.

@@ -278,3 +278,8 @@ export interface CreateBusinessRequest {
 export interface CreateBusinessResponse {
   businessId: string;
 }
+
+export interface ClaimPhoneCardsResponse {
+  /** Fichas de comercios que se han juntado con la cuenta. */
+  claimed: number;
+}
