@@ -65,7 +65,7 @@ Es el plan ya aprobado. Comprende:
 - Sin probar en el navegador: «¡Premio conseguido!» en las dos pantallas (lo cubren los tests).
 - Pendiente para otras fases: el teléfono opcional de los clientes por correo (fase 5), ocultar las
   tarjetas canjeadas (hecho en la fase 2), el icono PNG para iOS y
-  partir el *chunk* de Firebase de más de 500 kB (fase 7).
+  partir el *chunk* de Firebase de más de 500 kB (hechos en la fase 7).
 
 **Funcionalidades:**
 - **Comercio (`/negocio`):**
@@ -343,6 +343,20 @@ uno, ese comercio no puede sellar.
 
 **Hecho cuando** los comercios del piloto llevan 4 semanas dando sellos y el coste mensual está
 dentro de lo previsto.
+
+**Estado (2026-10-02): preparada en el código; el resto lo hace el usuario.**
+- Checklist del lanzamiento en `docs/lanzamiento.md`.
+- `/legal`: aviso legal, política de privacidad y contrato de encargo. Es un borrador con los datos
+  del titular por rellenar, pendiente de revisar con un asesor. Se enlaza desde la portada, desde la
+  casilla del registro del cliente y desde una casilla obligatoria nueva en el alta del comercio.
+- App Check opcional: la web lo activa si hay `VITE_APPCHECK_SITE_KEY`, y las Functions lo exigen con
+  `ENFORCE_APP_CHECK=true`. En los emuladores no se activa.
+- Iconos PNG (`apple-touch-icon` de 180 px, 192 px y 512 px *maskable*), generados desde `icon.svg`.
+- Firebase en su propio *chunk* (unos 600 kB, 180 kB con gzip), con el aviso subido a 800 kB.
+- **Simplificaciones:**
+  - no se guarda qué versión del texto legal se aceptó;
+  - el SDK de App Check se carga aunque no haya clave (unos 14 kB).
+- **Pendiente del usuario:** proyecto real, Blaze, dominio, datos legales, dispositivos y piloto.
 
 ## En todas las fases
 

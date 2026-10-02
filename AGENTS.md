@@ -108,3 +108,4 @@ tests/rules/             tests de firestore.rules y storage.rules contra el emul
 - `docs/arquitectura.md`: stack, decisiones de arquitectura y desarrollo local.
 - `docs/modelo-datos.md`: colecciones, reglas e índices de Firestore.
 - `docs/costes.md`: planes de Firebase, estrategia de coste y control de SMS.
+- `docs/lanzamiento.md`: checklist para pasar a producción y lanzar el piloto.

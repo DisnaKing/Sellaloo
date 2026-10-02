@@ -25,7 +25,7 @@ Objetivo: un MVP gratis o casi. Precios consultados en firebase.google.com/prici
    - Functions en `europe-west1` con 0 instancias mínimas y `maxInstances: 10`;
    - política de limpieza de Artifact Registry (`firebase functions:artifacts:setpolicy`), para que
      las imágenes de las Functions no ocupen espacio de pago;
-   - App Check en las Functions y en Auth.
+   - App Check en las Functions y en Auth (pasos en `docs/lanzamiento.md`).
 
 ## SMS: el único coste real
 

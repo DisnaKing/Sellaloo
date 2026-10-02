@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import { browserPopupRedirectResolver, connectAuthEmulator, indexedDBLocalPersistence, initializeAuth } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions';
@@ -33,6 +34,11 @@ const app = initializeApp({
   storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET ?? `${projectId}.firebasestorage.app`,
   appId: env.VITE_FIREBASE_APP_ID,
 });
+
+// App Check prueba que las peticiones vienen de esta web. Sin clave (emuladores) no se activa.
+if (env.VITE_APPCHECK_SITE_KEY) {
+  initializeAppCheck(app, { provider: new ReCaptchaEnterpriseProvider(env.VITE_APPCHECK_SITE_KEY), isTokenAutoRefreshEnabled: true });
+}
 
 export const auth = initializeAuth(app, {
   persistence: indexedDBLocalPersistence,

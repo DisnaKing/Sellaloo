@@ -15,11 +15,23 @@ export default defineConfig({
         theme_color: '#0b6b5d',
         background_color: '#ffffff',
         display: 'standalone',
-        // ponytail: solo SVG; iOS pide PNG para el icono de inicio, añadirlo al lanzar.
-        icons: [{ src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
+        // Los PNG salen de icon.svg, a sangre completa: el sistema recorta la forma.
+        icons: [
+          { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
       },
     }),
   ],
+  build: {
+    // Firebase va en su propio chunk: cambia menos que la app y la caché del navegador lo aprovecha.
+    // Por sí solo pasa de 500 kB (Auth y Firestore se usan en todas las pantallas).
+    chunkSizeWarningLimit: 800,
+    rolldownOptions: {
+      output: { codeSplitting: { groups: [{ name: 'firebase', test: /node_modules[\\/]@?firebase/ }] } },
+    },
+  },
   resolve: {
     alias: { '@shared': fileURLToPath(new URL('./functions/src/shared', import.meta.url)) },
   },

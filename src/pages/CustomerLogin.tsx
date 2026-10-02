@@ -173,7 +173,8 @@ function ProfileForm({ run, busy }: { run: Run; busy: boolean }) {
       <label>Nombre<input autoComplete="given-name" required maxLength={60} value={name} onChange={(e) => setName(e.target.value)} /></label>
       <label className="check">
         <input type="checkbox" required />
-        Acepto la política de privacidad
+        {/* Se abre aparte para no perder lo escrito en el formulario. */}
+        <span>Acepto la <a href="/legal#privacidad" target="_blank">política de privacidad</a></span>
       </label>
       <button disabled={busy}>Continuar</button>
       {/* Quien deja el alta del comercio a medias acaba aquí: su cuenta aún no tiene comercio. */}

@@ -87,6 +87,11 @@ export default function Onboarding() {
             <input type="number" required min={MIN_STAMPS_REQUIRED} max={MAX_STAMPS_REQUIRED} value={stampsRequired} onChange={(e) => setStampsRequired(e.target.valueAsNumber)} />
           </label>
           <label>Premio<input required maxLength={80} value={rewardDescription} onChange={(e) => setRewardDescription(e.target.value)} /></label>
+          <label className="check">
+            <input type="checkbox" required />
+            {/* ponytail: no se guarda qué versión del texto se aceptó; añadirlo si el texto cambia tras el piloto. */}
+            <span>Acepto el <a href="/legal" target="_blank">aviso legal y el contrato de encargo</a></span>
+          </label>
           <button disabled={busy}>Crear mi comercio</button>
         </form>
       )}

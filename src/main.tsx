@@ -18,6 +18,7 @@ function Home() {
       <Link className="button" to="/entrar">Ver mis tarjetas</Link>
       <Link className="button secondary" to="/negocio/entrar">Soy un comercio</Link>
       <Link className="button secondary" to="/negocio/alta">Crear mi comercio</Link>
+      <Link className="link" to="/legal">Aviso legal y privacidad</Link>
     </main>
   );
 }
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
   { path: '/tarjetas', lazy: guarded('customer', () => import('./pages/Cards')) },
   { path: '/perfil', lazy: guarded('customer', () => import('./pages/Profile')) },
   { path: '/admin', lazy: guarded('admin', () => import('./pages/Admin')) },
+  { path: '/legal', lazy: async () => ({ Component: (await import('./pages/Legal')).default }) },
   { path: '/admin/:businessId', lazy: guarded('admin', () => import('./pages/Settings')) },
   { path: '*', element: <Navigate to="/" replace /> },
 ]);

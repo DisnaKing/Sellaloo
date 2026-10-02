@@ -11,7 +11,8 @@ import { handleUndoLastVisit } from './handlers/undoLastVisit.js';
 import { REGION } from './shared/model.js';
 
 // Sin instancias mínimas: el MVP vive en la cuota gratuita (ver docs/costes.md).
-setGlobalOptions({ region: REGION, maxInstances: 10 });
+// App Check se exige con ENFORCE_APP_CHECK=true en `functions/.env.<proyecto>` (ver docs/lanzamiento.md).
+setGlobalOptions({ region: REGION, maxInstances: 10, enforceAppCheck: process.env.ENFORCE_APP_CHECK === 'true' });
 
 export const issueQr = onCall((req) => handleIssueQr({ db, now: new Date() }, req.auth?.uid, req.data));
 

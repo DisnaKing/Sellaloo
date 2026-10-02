@@ -6,14 +6,13 @@
 
 ## Objetivo actual
 
-- **Fase 6 (administración) hecha, sin commit.** Commit y siguiente fase solo cuando lo pida el
-  usuario; estado en `docs/roadmap.md`.
+- **Fase 7: código preparado, sin commit.** El resto (proyecto real, Blaze, dominio, legales,
+  dispositivos, piloto) lo hace el usuario con `docs/lanzamiento.md`.
 
 ## Estado
 
-- [x] Fases 1 a 4 con commit (`34f6915`, `4f78344`, `90ff097`, `b722615`).
-- [x] Fase 5 con commit (`bf16c67`).
-- [x] Fase 6: `/admin` y `/admin/:businessId`; admin entra por `/negocio/entrar`.
+- [x] Fases 1 a 6 con commit (la 6 es `ac1aa6c`).
+- [x] Fase 7 (código): `/legal`, App Check opcional, iconos PNG y *chunk* de Firebase.
 - [ ] Repositorio en GitHub: **espera el OK del usuario**.
 - [ ] Pregunta pendiente: emuladores en `0.0.0.0` para probar desde el móvil.
 - [ ] Desplegar la base en Spark (fase 0): necesita el proyecto real de Firebase.
@@ -50,5 +49,5 @@
 
 - Un cliente nuevo que se registra por SMS puede tardar más de 150 s y el QR caducar: el dueño
   genera otro.
-- Lo que tiene que hacer el usuario: crear el proyecto de Firebase, `npx firebase login`,
-  `npx firebase use --add`, activar Auth y, al lanzar, el plan Blaze.
+- Lo que tiene que hacer el usuario: seguir `docs/lanzamiento.md`.
+- `scripts/set-admin.ts` solo va contra los emuladores.
