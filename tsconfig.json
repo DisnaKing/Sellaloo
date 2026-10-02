@@ -1,0 +1,23 @@
+{
+  // Un solo tsconfig para la web, los tests de reglas, los scripts y la config de Vite.
+  // Las Functions tienen el suyo en `functions/`.
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "types": ["node", "vite/client", "vite-plugin-pwa/client"],
+    "paths": { "@shared/*": ["./functions/src/shared/*"] },
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["src", "tests", "scripts", "vite.config.ts"]
+}
