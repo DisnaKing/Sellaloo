@@ -58,7 +58,7 @@ export function RequireRole({ role, children }: { role: Role; children: ReactNod
   const location = useLocation();
   if (session === undefined) return <p className="page">Cargando…</p>;
   const next = encodeURIComponent(location.pathname);
-  if (!session) return <Navigate to={`${role === 'owner' ? '/negocio/entrar' : '/entrar'}?next=${next}`} replace />;
+  if (!session) return <Navigate to={`${role === 'customer' ? '/entrar' : '/negocio/entrar'}?next=${next}`} replace />;
   if (session.role !== role) return <Navigate to="/" replace />;
   if (role === 'customer' && !session.hasProfile) return <Navigate to={`/entrar?next=${next}`} replace />;
   return children;

@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, limit, query, updateDoc, where } from 'firebase/firestore';
 import { useEffect, useState, type FormEvent } from 'react';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import {
   COLLECTIONS,
   MAX_STAMPS_REQUIRED,
@@ -22,12 +22,16 @@ interface Form {
   stampsRequired: number;
   rewardDescription: string;
   stampExpiryMonths: string;
+  active: boolean;
 }
 
 const toNumber = (v: string) => (v === '' ? null : Number(v));
 
+/** Ajustes del dueño (`/negocio/ajustes`) y ficha del admin (`/admin/:businessId`). */
 export default function Settings() {
-  const { user, businessId } = useSession()!;
+  const { user, role, businessId: ownBusinessId } = useSession()!;
+  const businessId = useParams().businessId ?? ownBusinessId;
+  const isAdmin = role === 'admin';
   const [form, setForm] = useState<Form | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
   const [message, setMessage] = useState('');
@@ -35,18 +39,15 @@ export default function Settings() {
 
   useEffect(() => {
     void (async () => {
-      const [business, programs] = await Promise.all([
-        getDoc(doc(db, COLLECTIONS.businesses, businessId!)),
-        getDocs(
-          query(
-            collection(db, COLLECTIONS.businesses, businessId!, COLLECTIONS.programs),
-            where('ownerUid', '==', user.uid),
-            where('active', '==', true),
-            limit(1),
-          ),
+      const b = (await getDoc(doc(db, COLLECTIONS.businesses, businessId!))).data() as BusinessDoc;
+      const programs = await getDocs(
+        query(
+          collection(db, COLLECTIONS.businesses, businessId!, COLLECTIONS.programs),
+          where('ownerUid', '==', b.ownerUid),
+          where('active', '==', true),
+          limit(1),
         ),
-      ]);
-      const b = business.data() as BusinessDoc;
+      );
       const p = programs.docs[0]!;
       const program = p.data() as ProgramDoc;
       setForm({
@@ -58,19 +59,32 @@ export default function Settings() {
         stampsRequired: program.stampsRequired,
         rewardDescription: program.rewardDescription,
         stampExpiryMonths: String(program.stampExpiryMonths ?? ''),
+        active: b.active,
       });
     })();
-  }, [businessId, user.uid]);
+  }, [businessId]);
 
   if (!form) return <p className="page">Cargando…</p>;
   const set = (patch: Partial<Form>) => setForm({ ...form, ...patch });
+
+  const businessRef = doc(db, COLLECTIONS.businesses, businessId!);
+
+  async function toggleActive() {
+    setBusy(true);
+    try {
+      await updateDoc(businessRef, { active: !form!.active });
+      setForm({ ...form!, active: !form!.active });
+    } catch (err) {
+      setMessage(errorMessage(err));
+    }
+    setBusy(false);
+  }
 
   async function save(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
     setMessage('');
     try {
-      const businessRef = doc(db, COLLECTIONS.businesses, businessId!);
       const logoUrl = logo ? await uploadLogo(user.uid, logo) : form!.logoUrl;
       await Promise.all([
         updateDoc(businessRef, {
@@ -96,7 +110,13 @@ export default function Settings() {
 
   return (
     <main className="page">
-      <h1>Ajustes</h1>
+      <h1>{isAdmin ? form.name : 'Ajustes'}</h1>
+      {isAdmin && (
+        <>
+          <p>{form.active ? 'Activo.' : 'Desactivado: no puede generar QR ni sellar.'}</p>
+          <button className="secondary" disabled={busy} onClick={toggleActive}>{form.active ? 'Desactivar' : 'Activar'}</button>
+        </>
+      )}
       <form onSubmit={save}>
         <label>Nombre<input required maxLength={80} value={form.name} onChange={(e) => set({ name: e.target.value })} /></label>
         <label>
@@ -106,7 +126,8 @@ export default function Settings() {
           </select>
         </label>
         {form.logoUrl && <img className="logo" src={form.logoUrl} alt="Logo actual" />}
-        <label>Logo<input type="file" accept="image/*" onChange={(e) => setLogo(e.target.files?.[0] ?? null)} /></label>
+        {/* ponytail: el admin no cambia el logo (Storage solo deja subirlo al dueño). */}
+        {!isAdmin && <label>Logo<input type="file" accept="image/*" onChange={(e) => setLogo(e.target.files?.[0] ?? null)} /></label>}
         <label>
           Sellos por cliente y día
           <select value={form.dailyVisitLimit} onChange={(e) => set({ dailyVisitLimit: e.target.value })}>
@@ -135,7 +156,7 @@ export default function Settings() {
         <button disabled={busy}>Guardar</button>
       </form>
       {message && <p role="status">{message}</p>}
-      <Link className="link" to="/negocio">Volver</Link>
+      <Link className="link" to={isAdmin ? '/admin' : '/negocio'}>Volver</Link>
     </main>
   );
 }

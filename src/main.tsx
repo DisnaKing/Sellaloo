@@ -11,8 +11,7 @@ function Home() {
   if (session === undefined) return <p className="page">Cargando…</p>;
   if (session?.role === 'owner') return <Navigate to="/negocio" replace />;
   if (session?.role === 'customer') return <Navigate to="/tarjetas" replace />;
-  // ponytail: el panel de admin llega en la fase 6.
-  if (session?.role === 'admin') return <p className="page">Panel de administración: próximamente.</p>;
+  if (session?.role === 'admin') return <Navigate to="/admin" replace />;
   return (
     <main className="page">
       <h1>Sellaloo</h1>
@@ -43,6 +42,8 @@ const router = createBrowserRouter([
   { path: '/q/:token', lazy: guarded('customer', () => import('./pages/Redeem')) },
   { path: '/tarjetas', lazy: guarded('customer', () => import('./pages/Cards')) },
   { path: '/perfil', lazy: guarded('customer', () => import('./pages/Profile')) },
+  { path: '/admin', lazy: guarded('admin', () => import('./pages/Admin')) },
+  { path: '/admin/:businessId', lazy: guarded('admin', () => import('./pages/Settings')) },
   { path: '*', element: <Navigate to="/" replace /> },
 ]);
 

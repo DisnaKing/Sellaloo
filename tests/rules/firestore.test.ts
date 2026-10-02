@@ -75,6 +75,14 @@ describe('businesses', () => {
     await assertFails(updateDoc(ref, { dailyVisitLimit: 0 }));
     await assertFails(updateDoc(doc(as('otro'), 'businesses/cafe'), { name: 'Robado' }));
   });
+
+  it('un admin corrige los datos y lo desactiva, pero no cambia el plan', async () => {
+    const ref = doc(as('x', { admin: true }), 'businesses/cafe');
+    await assertSucceeds(updateDoc(ref, { name: 'Café Corregido', active: false }));
+    await assertFails(updateDoc(ref, { active: 'no' }));
+    await assertFails(updateDoc(ref, { plan: 'pro' }));
+    await assertSucceeds(updateDoc(doc(as('x', { admin: true }), 'businesses/cafe/programs/p1'), { stampsRequired: 8 }));
+  });
 });
 
 describe('programs', () => {

@@ -37,7 +37,8 @@ qué de cada colección y quién puede leerla.
   privacidad. `phoneVerified` tiene que coincidir con el teléfono de su login por SMS.
 - El cliente lee las `cards` cuyo `customerId` es su `uid`.
 - El dueño puede editar `stampsRequired`, `rewardDescription` y `stampExpiryMonths` de su programa.
-- El admin lo lee todo.
+- El admin lo lee todo. Además edita los mismos campos que el dueño en el comercio y su programa, y
+  activa o desactiva el comercio (`active`).
 - Nadie escribe en `cards`, `visits`, `qrTokens` ni `dailyVisits` desde el cliente.
 
 - `deleteAccount` borra `customers/{uid}` y el usuario de Auth. Sus fichas se quedan en los

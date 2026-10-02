@@ -2,7 +2,7 @@ rules_version = '2';
 
 // Las escrituras de sellos, tarjetas, visitas y QR solo las hacen las Cloud Functions (Admin SDK,
 // que se salta estas reglas). Desde el cliente solo se escribe el perfil propio, los datos
-// básicos del comercio y su programa. Todo lo que no aparece aquí está denegado.
+// básicos del comercio y su programa (el dueño o un admin), y `active` (solo un admin). Todo lo que no aparece aquí está denegado.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -23,10 +23,12 @@ service cloud.firestore {
       return isAdmin() || ownsDoc();
     }
 
-    function validBusinessUpdate() {
+    // El admin además activa o desactiva el comercio (`extra` = ['active']).
+    function validBusinessUpdate(extra) {
       let d = request.resource.data;
       return d.diff(resource.data).affectedKeys()
-          .hasOnly(['name', 'type', 'logoUrl', 'timezone', 'dailyVisitLimit'])
+          .hasOnly(['name', 'type', 'logoUrl', 'timezone', 'dailyVisitLimit'].concat(extra))
+        && d.active is bool
         && d.name is string && d.name.size() >= 1 && d.name.size() <= 80
         && d.type is string && d.type.size() <= 40
         && (d.logoUrl == null || (d.logoUrl is string && d.logoUrl.size() <= 500))
@@ -61,11 +63,11 @@ service cloud.firestore {
 
     match /businesses/{businessId} {
       allow read: if ownerOrAdmin();
-      allow update: if ownsDoc() && validBusinessUpdate();
+      allow update: if (ownsDoc() && validBusinessUpdate([])) || (isAdmin() && validBusinessUpdate(['active']));
 
       match /programs/{programId} {
         allow read: if ownerOrAdmin();
-        allow update: if ownsDoc() && validProgramUpdate();
+        allow update: if ownerOrAdmin() && validProgramUpdate();
       }
       match /members/{memberId} {
         allow read: if ownerOrAdmin();

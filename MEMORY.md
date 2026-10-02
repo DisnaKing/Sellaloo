@@ -6,15 +6,14 @@
 
 ## Objetivo actual
 
-- **Fase 6 (administración) en curso.** Commit y siguiente fase solo cuando lo pida el usuario;
-  estado en `docs/roadmap.md`.
+- **Fase 6 (administración) hecha, sin commit.** Commit y siguiente fase solo cuando lo pida el
+  usuario; estado en `docs/roadmap.md`.
 
 ## Estado
 
 - [x] Fases 1 a 4 con commit (`34f6915`, `4f78344`, `90ff097`, `b722615`).
-- [x] Fase 5: `/tarjetas` con casillas y aviso de instalar, `/perfil`, `claimPhoneCards` y
-  `deleteAccount`.
-- [x] Commit de la fase 5.
+- [x] Fase 5 con commit (`bf16c67`).
+- [x] Fase 6: `/admin` y `/admin/:businessId`; admin entra por `/negocio/entrar`.
 - [ ] Repositorio en GitHub: **espera el OK del usuario**.
 - [ ] Pregunta pendiente: emuladores en `0.0.0.0` para probar desde el móvil.
 - [ ] Desplegar la base en Spark (fase 0): necesita el proyecto real de Firebase.

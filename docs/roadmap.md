@@ -300,6 +300,21 @@ simplificó:
 **Hecho cuando** el admin del seed ve los comercios de prueba con datos correctos y, al desactivar
 uno, ese comercio no puede sellar.
 
+**Estado (2026-10-02): hecha.**
+- `/admin`: contadores de uso, medianas del QR y del alta y lista de comercios. `/admin/:businessId`
+  reutiliza la pantalla de Ajustes con un botón «Desactivar»/«Activar».
+- **Cambio sobre el plan:** sin callable `setBusinessActive`. Las reglas dejan al admin editar los
+  datos del comercio y del programa, y `active`; las Functions ya rechazaban sellar con
+  `business-inactive`. Un test de reglas nuevo (15 de reglas y 46 de Functions contra el emulador).
+- Probado en el navegador con `admin@demo.es`: el sello por teléfono del dueño aparece en la lista;
+  tras renombrar y desactivar `demo-cafe`, el dueño ve «Este comercio no está activo ahora mismo.»
+  al generar un QR y al sellar por teléfono.
+- **Simplificaciones:**
+  - el último sello sale de la última visita, aunque esté deshecha;
+  - una consulta por comercio, sin paginar;
+  - la mediana del QR usa las últimas 500 visitas;
+  - el admin no cambia el logo, porque Storage solo deja subirlo al dueño.
+
 ## Fase 7 — Lanzamiento piloto
 
 - **Pasar a Blaze con protecciones:**
