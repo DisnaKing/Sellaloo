@@ -166,7 +166,9 @@ export async function stamp(
     expiresAt: Timestamp.fromMillis(now.getTime() + DAILY_VISIT_TTL_MS),
   });
 
-  addStats(tx, db.collection(COLLECTIONS.businesses).doc(businessId), today, business.ownerUid, nowTs, {
+  const businessRef = db.collection(COLLECTIONS.businesses).doc(businessId);
+  if (!business.firstStampAt) tx.update(businessRef, { firstStampAt: nowTs });
+  addStats(tx, businessRef, today, business.ownerUid, nowTs, {
     visits: 1,
     [input.method === 'qr' ? 'qrVisits' : 'phoneVisits']: 1,
     stamps: amount,

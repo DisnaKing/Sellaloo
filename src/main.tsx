@@ -17,6 +17,7 @@ function Home() {
       <h1>Sellaloo</h1>
       <Link className="button" to="/entrar">Ver mis tarjetas</Link>
       <Link className="button secondary" to="/negocio/entrar">Soy un comercio</Link>
+      <Link className="button secondary" to="/negocio/alta">Crear mi comercio</Link>
     </main>
   );
 }
@@ -34,6 +35,8 @@ const router = createBrowserRouter([
   { path: '/entrar', lazy: async () => ({ Component: (await import('./pages/CustomerLogin')).default }) },
   { path: '/negocio/entrar', lazy: async () => ({ Component: (await import('./pages/OwnerLogin')).default }) },
   { path: '/negocio', lazy: guarded('owner', () => import('./pages/Business')) },
+  { path: '/negocio/alta', lazy: async () => ({ Component: (await import('./pages/Onboarding')).default }) },
+  { path: '/negocio/ajustes', lazy: guarded('owner', () => import('./pages/Settings')) },
   { path: '/q/:token', lazy: guarded('customer', () => import('./pages/Redeem')) },
   { path: '/tarjetas', lazy: guarded('customer', () => import('./pages/Cards')) },
   { path: '*', element: <Navigate to="/" replace /> },

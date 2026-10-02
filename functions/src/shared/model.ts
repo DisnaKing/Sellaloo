@@ -8,7 +8,6 @@ export const COLLECTIONS = {
   programs: 'programs',
   members: 'members',
   stats: 'stats',
-  programTemplates: 'programTemplates',
   customers: 'customers',
   cards: 'cards',
   qrTokens: 'qrTokens',
@@ -24,6 +23,9 @@ export type QrAmount = (typeof QR_AMOUNTS)[number];
 export const DEFAULT_TIMEZONE = 'Europe/Madrid';
 /** Visitas con sello al día por cliente y comercio; `null` significa sin límite. */
 export const DEFAULT_DAILY_VISIT_LIMIT = 1;
+/** Sellos de una tarjeta; `firestore.rules` repite estos límites. */
+export const MIN_STAMPS_REQUIRED = 2;
+export const MAX_STAMPS_REQUIRED = 20;
 
 /** Motivo de error que viaja en `HttpsError.details.reason` para que la web muestre el mensaje adecuado. */
 export type ErrorReason =
@@ -43,7 +45,8 @@ export type ErrorReason =
   | 'unknown-phone'
   | 'nothing-to-undo'
   | 'undo-expired'
-  | 'already-redeemed';
+  | 'already-redeemed'
+  | 'has-business';
 
 export interface ErrorDetails {
   reason: ErrorReason;
@@ -70,6 +73,8 @@ export interface BusinessDoc {
   plan: 'free';
   active: boolean;
   createdAt: TimestampLike;
+  /** Primer sello dado; con `createdAt` mide cuánto tarda el alta. */
+  firstStampAt: TimestampLike | null;
 }
 
 export interface ProgramDoc {
@@ -97,12 +102,21 @@ export interface MemberDoc {
   createdAt: TimestampLike;
 }
 
-export interface ProgramTemplateDoc {
+export interface ProgramTemplate {
   businessType: string;
   label: string;
   stampsRequired: number;
   rewardDescription: string;
 }
+
+// ponytail: plantillas en código; pasan a Firestore si el admin tiene que editarlas.
+export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
+  { businessType: 'peluqueria', label: 'Peluquería', stampsRequired: 8, rewardDescription: 'Un corte gratis' },
+  { businessType: 'estetica', label: 'Estética', stampsRequired: 6, rewardDescription: 'Un tratamiento gratis' },
+  { businessType: 'cafeteria', label: 'Cafetería', stampsRequired: 10, rewardDescription: 'Un café gratis' },
+  { businessType: 'panaderia', label: 'Panadería', stampsRequired: 10, rewardDescription: 'Una barra de pan gratis' },
+  { businessType: 'otros', label: 'Otro', stampsRequired: 10, rewardDescription: 'Un regalo' },
+];
 
 export interface CustomerDoc {
   name: string;
@@ -246,4 +260,15 @@ export interface UndoLastVisitResponse {
 
 export interface RedeemRewardRequest {
   cardId: string;
+}
+
+export interface CreateBusinessRequest {
+  name: string;
+  type: string;
+  stampsRequired: number;
+  rewardDescription: string;
+}
+
+export interface CreateBusinessResponse {
+  businessId: string;
 }

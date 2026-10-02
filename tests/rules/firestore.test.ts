@@ -48,6 +48,9 @@ beforeEach(async () => {
       ownerUid: OWNER, name: 'Café', type: 'cafeteria', logoUrl: null,
       timezone: 'Europe/Madrid', dailyVisitLimit: 1, plan: 'free', active: true,
     });
+    await setDoc(doc(db, 'businesses/cafe/programs/p1'), {
+      ownerUid: OWNER, stampsRequired: 10, rewardDescription: 'Un café', stampExpiryMonths: null, active: true,
+    });
     await setDoc(doc(db, 'cards/c1'), { ownerUid: OWNER, customerId: MARIA, stamps: 3 });
     await setDoc(doc(db, 'qrTokens/t1'), { ownerUid: OWNER });
     await setDoc(doc(db, 'dailyVisits/d1'), { ownerUid: OWNER });
@@ -69,6 +72,17 @@ describe('businesses', () => {
     await assertFails(updateDoc(ref, { active: false }));
     await assertFails(updateDoc(ref, { dailyVisitLimit: 0 }));
     await assertFails(updateDoc(doc(as('otro'), 'businesses/cafe'), { name: 'Robado' }));
+  });
+});
+
+describe('programs', () => {
+  it('el dueño cambia sellos, premio y caducidad, dentro de los límites', async () => {
+    const ref = doc(as(OWNER), 'businesses/cafe/programs/p1');
+    await assertSucceeds(updateDoc(ref, { stampsRequired: 8, rewardDescription: 'Un té', stampExpiryMonths: 6 }));
+    await assertFails(updateDoc(ref, { stampsRequired: 1 }));
+    await assertFails(updateDoc(ref, { stampExpiryMonths: 0 }));
+    await assertFails(updateDoc(ref, { active: false }));
+    await assertFails(updateDoc(doc(as('otro'), 'businesses/cafe/programs/p1'), { stampsRequired: 8 }));
   });
 });
 

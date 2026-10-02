@@ -1,7 +1,7 @@
 # Roadmap del MVP — Sellaloo
 
 > **Estado (2026-10-01):** aprobado; las 5 decisiones del final están aceptadas.
-> **2026-10-02:** fase 1 terminada en emuladores. De la fase 0 falta desplegar en Spark, que
+> **2026-10-02:** fases 1, 2 y 3 terminadas en emuladores. De la fase 0 falta desplegar en Spark, que
 > requiere el proyecto real de Firebase (ver `MEMORY.md`).
 > **Fuente:** [producto/funcionalidades-mvp.md](producto/funcionalidades-mvp.md), transcrito de
 > `Sellaloo_funcionalidades_MVP.docx`.
@@ -132,7 +132,7 @@ tarda unos segundos más. Se mide en el piloto. Si molesta, se pone `minInstance
 
 ## Fase 2 — Resto del motor de sellos
 
-**Estado (2026-10-02): hecha, sin commit.**
+**Estado (2026-10-02): hecha (`4f78344`).**
 - Functions `addMember`, `stampByPhone`, `undoLastVisit` y `redeemReward`. El reparto de sellos
   vive en `handlers/stamp.ts` y lo comparten el QR y el teléfono. 13 tests nuevos contra el
   emulador (`functions/test/phase2.test.ts`).
@@ -180,6 +180,22 @@ Todo esto queda cubierto por los tests de las Functions.
 
 ## Fase 3 — Alta del comercio y onboarding (menos de 5 minutos)
 
+**Estado (2026-10-02): hecha, sin commit.**
+- Callable `createBusiness` y 4 tests contra el emulador (`functions/test/phase3.test.ts`). El
+  primer sello de cada comercio guarda `firstStampAt`, que sirve para la métrica.
+- Web: «Crear mi comercio» en la portada y en el login del dueño, asistente `/negocio/alta`, aviso
+  de bienvenida en `/negocio` y `/negocio/ajustes`.
+- Reglas: el dueño edita su programa (sellos, premio y caducidad) y sube su logo a
+  `logos/{uid}/logo` (`storage.rules`).
+- Probado en el navegador: alta de «Horno de Prueba» con logo, primer sello por teléfono y cambio
+  de ajustes.
+- Cambios respecto al plan:
+  - las plantillas viven en el código (`PROGRAM_TEMPLATES`), no en una colección;
+  - el logo se guarda en WebP, o en JPEG si el navegador no sabe generar WebP (Safari);
+  - el logo todavía no sale en las tarjetas del cliente;
+  - en Ajustes, el límite diario es 1, 2, 3 o sin límite, y la caducidad 3, 6 o 12 meses.
+- Falta el cronometraje con una persona real.
+
 - **Entrada:**
   - en la portada, «Soy un comercio» y «Crear mi comercio»;
   - registro con correo y contraseña;
@@ -201,7 +217,7 @@ Todo esto queda cubierto por los tests de las Functions.
 - **Logo:**
   - se reduce en el navegador a 256 px en WebP;
   - se sube a Cloud Storage, que en los proyectos nuevos exige Blaze, igual que las Functions.
-- **Plantillas por tipo:** peluquería, estética, cafetería, panadería y otros (`programTemplates`).
+- **Plantillas por tipo:** peluquería, estética, cafetería, panadería y otros (`PROGRAM_TEMPLATES`).
 - **Métrica:** tiempo desde el alta del comercio hasta su primer sello.
 
 **Hecho cuando** una persona que no conoce la app crea su comercio y da su primer sello en menos de

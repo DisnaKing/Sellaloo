@@ -63,8 +63,8 @@ y costes en [costes.md](costes.md).
 
 ## Desarrollo local
 
-- Proyecto `demo-sellaloo` en los emuladores: Auth 9099, Firestore 8080, Functions 5001, Hosting
-  5000 y UI 4000.
+- Proyecto `demo-sellaloo` en los emuladores: Auth 9099, Firestore 8080, Functions 5001, Storage
+  9199, Hosting 5000 y UI 4000.
 - `lib/firebase.ts` conecta con los emuladores en el mismo `location.hostname` de la página. Para
   probar dos sesiones en un navegador se usan `localhost:5173` y `127.0.0.1:5173` (Vite con
   `--host`). `[::1]` no sirve, porque los emuladores solo escuchan en IPv4.

@@ -37,11 +37,11 @@ functions/               Cloud Functions (paquete npm propio)
   src/handlers/          lógica de cada callable: recibe {db, now}, sin depender de onCall
   src/index.ts           envoltorios onCall finos
   test/                  tests contra el emulador de Firestore
-firestore.rules  firestore.indexes.json  firebase.json  .firebaserc (demo-sellaloo)
+firestore.rules  firestore.indexes.json  storage.rules  firebase.json  .firebaserc (demo-sellaloo)
 docs/                    roadmap y documentación
 src/                     web (pages/, lib/firebase.ts, auth.tsx)
 scripts/                 seed.ts, set-admin.ts (Admin SDK contra los emuladores)
-tests/rules/             tests de firestore.rules contra el emulador
+tests/rules/             tests de firestore.rules y storage.rules contra el emulador
 ```
 
 ## Comandos

@@ -33,7 +33,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 }
 form { display: flex; flex-direction: column; gap: 16px; }
 label { display: flex; flex-direction: column; gap: 4px; }
-input {
+input, select {
   min-height: 56px;
   padding: 0 16px;
   font: inherit;
@@ -68,3 +68,4 @@ input {
 .stamps { font-size: 28px; letter-spacing: 4px; color: var(--brand); margin: 8px 0; }
 .notice p { margin: 0 0 12px; }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #ddd; }
+.logo { width: 96px; height: 96px; object-fit: contain; border-radius: 12px; }

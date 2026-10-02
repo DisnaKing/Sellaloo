@@ -90,6 +90,7 @@ const business: BusinessDoc = {
   plan: 'free',
   active: true,
   createdAt: now,
+  firstStampAt: now,
 };
 const program: ProgramDoc = {
   ownerUid: 'demo-owner',

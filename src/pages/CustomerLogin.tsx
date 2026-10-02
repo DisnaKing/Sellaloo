@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useState, type FormEvent } from 'react';
-import { Navigate, useSearchParams } from 'react-router';
+import { Link, Navigate, useSearchParams } from 'react-router';
 import { COLLECTIONS } from '@shared/model';
 import { useSession } from '../auth';
 import { auth, db, errorMessage } from '../lib/firebase';
@@ -159,6 +159,8 @@ function ProfileForm({ run, busy }: { run: Run; busy: boolean }) {
         Acepto la política de privacidad
       </label>
       <button disabled={busy}>Continuar</button>
+      {/* Quien deja el alta del comercio a medias acaba aquí: su cuenta aún no tiene comercio. */}
+      <Link className="link" to="/negocio/alta">¿Eres un comercio? Crear mi comercio</Link>
     </form>
   );
 }

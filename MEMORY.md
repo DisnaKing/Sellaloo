@@ -6,20 +6,16 @@
 
 ## Objetivo actual
 
-- **Fase 2 terminada, sin commit** (estado en `docs/roadmap.md`). Esperando al usuario: commit y
+- **Fase 3 terminada, sin commit** (estado en `docs/roadmap.md`). Esperando al usuario: commit y
   siguiente fase solo cuando lo pida.
 
 ## Estado
 
-- [x] Functions `issueQr` y `redeemQr`, dominio, reglas, índices, seed y scripts.
-- [x] Web: logins del comercio y del cliente, `/negocio`, `/q/:token`, `/tarjetas` y «Salir».
-- [x] CI (`.github/workflows/ci.yml`): lint, typecheck, test, test:emulator y build.
-- [x] Prueba con dos navegadores: «Sello dado a María.» en unos 3 s.
-- [x] Docs: `docs/producto/funcionalidades-mvp.md`, `arquitectura.md`, `modelo-datos.md` y
-  `costes.md`.
-- [x] Commit de la fase 1 (`34f6915`).
+- [x] Fase 1 (`34f6915`): QR de extremo a extremo, CI y docs.
 - [x] Fase 2: callables `addMember`, `stampByPhone`, `undoLastVisit`, `redeemReward`; web y tests.
-- [ ] Commit de la fase 2 y repositorio en GitHub: **esperan el OK del usuario**.
+- [x] Commit de la fase 2 (`4f78344`).
+- [x] Fase 3: `createBusiness`, asistente `/negocio/alta`, `/negocio/ajustes`, logo en Storage.
+- [ ] Commit de la fase 3 y repositorio en GitHub: **esperan el OK del usuario**.
 - [ ] Desplegar la base en Spark (fase 0): necesita el proyecto real de Firebase.
 
 ## Contexto relevante
@@ -39,12 +35,13 @@
   - Firestore falla con `Unable to establish loopback connection` salvo con
     `JAVA_TOOL_OPTIONS="-Djdk.net.unixdomain.tmpdir=<carpeta temporal existente>"`;
   - Functions tarda unos 38 s en cargar en frío: usar `FUNCTIONS_DISCOVERY_TIMEOUT=60`;
-  - parar una tarea en segundo plano deja procesos huérfanos: revisar los puertos
+  - parar una tarea en segundo plano deja procesos huérfanos (Storage usa el 9199): revisar los puertos
     (`Get-NetTCPConnection`) y matarlos con `Stop-Process`.
 - Dos sesiones en un navegador: `localhost:5173` y `127.0.0.1:5173` (Vite con `--host`). `[::1]`
   no sirve.
 - Código SMS del emulador: `curl http://127.0.0.1:9099/emulator/v1/projects/demo-sellaloo/verificationCodes`.
-- En Chrome, los clics por coordenadas funcionan mejor que por referencia.
+- En Chrome, los clics por coordenadas funcionan mejor que por referencia. Para subir un fichero:
+  JS que pinta un canvas, crea un `File`, lo mete con `DataTransfer` en `input.files` y lanza `change`.
 - En Bash, usar rutas absolutas: el directorio de trabajo cambia entre la raíz y `functions/`.
 
 ## Riesgos y avisos para el usuario

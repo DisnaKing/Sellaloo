@@ -7,11 +7,10 @@ qué de cada colección y quién puede leerla.
 
 | Colección | Para qué | Campos clave |
 |---|---|---|
-| `businesses/{id}` | comercio | `ownerUid`, `name`, `type`, `logoUrl`, `timezone`, `dailyVisitLimit`, `plan`, `active` |
+| `businesses/{id}` | comercio | `ownerUid`, `name`, `type`, `logoUrl`, `timezone`, `dailyVisitLimit`, `plan`, `active`, `firstStampAt` (para la métrica del onboarding) |
 | `businesses/{id}/programs/{id}` | tarjeta del comercio (una activa en el MVP) | `stampsRequired`, `rewardDescription`, `stampExpiryMonths` (nulo = no caducan), `active` |
 | `businesses/{id}/members/{id}` | cliente dentro del comercio, para listar y buscar | `customerId` (nulo si lo creó el dueño a mano), `name`, `phone`, `phoneVerified`, `currentStamps`, `rewardsPending`, `activeCardId`, `lastVisitAt` |
 | `businesses/{id}/stats/{AAAA-MM \| total}` | contadores del panel | `visits`, `qrVisits`, `phoneVisits`, `stamps`, `rewardsEarned`, `rewardsRedeemed`, `newMembers`, `phoneSignups`, `flowMsTotal`; se actualizan en la misma transacción que el sello (y se restan al deshacer) |
-| `programTemplates/{id}` | plantillas por tipo de negocio | `businessType`, `stampsRequired`, `rewardDescription` |
 | `customers/{uid}` | cliente final | `name`, `email`, `phone` (opcional), `phoneVerified`, `privacyAcceptedAt` |
 | `cards/{id}` | tarjeta de un cliente | `businessId`, `businessName`, `ownerUid`, `memberId`, `customerId`, `customerPhone`, `stamps`, `stampsRequired`, `reward`, `status` (`active` / `reward_pending` / `redeemed`), `completedAt`, `redeemedAt`, `stampsExpireAt` (nulo = no caducan) |
 | `qrTokens/{token}` | QR de un solo uso | `businessId`, `ownerUid`, `amount` (1–3), `createdAt`, `expiresAt` (+150 s), `usedAt`, `usedByName`, `result` |
@@ -37,11 +36,20 @@ qué de cada colección y quién puede leerla.
 - El cliente crea y edita su `customers/{uid}`: nombre, teléfono declarado y aceptación de la
   privacidad. `phoneVerified` tiene que coincidir con el teléfono de su login por SMS.
 - El cliente lee las `cards` cuyo `customerId` es su `uid`.
-- `programTemplates` las lee cualquiera con sesión.
+- El dueño puede editar `stampsRequired`, `rewardDescription` y `stampExpiryMonths` de su programa.
 - El admin lo lee todo.
 - Nadie escribe en `cards`, `visits`, `qrTokens` ni `dailyVisits` desde el cliente.
 
 Los tests están en `tests/rules/firestore.test.ts` (`npm run test:rules`).
+
+## Cloud Storage (`storage.rules`)
+
+- `logos/{uid}/logo`: lo sube el dueño con ese `uid`, en WebP o JPEG y con menos de 100 KB. La
+  lectura es pública.
+- Las plantillas por tipo de negocio no están en Firestore: son `PROGRAM_TEMPLATES` en
+  `functions/src/shared/model.ts`.
+
+Los tests están en `tests/rules/storage.test.ts`.
 
 ## Índices (`firestore.indexes.json`)
 

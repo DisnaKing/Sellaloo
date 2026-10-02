@@ -2,6 +2,7 @@ import { signOut } from 'firebase/auth';
 import { collection, doc, getDocs, limit, onSnapshot, query, where } from 'firebase/firestore';
 import QRCode from 'qrcode';
 import { useEffect, useState, type FormEvent } from 'react';
+import { Link, useLocation } from 'react-router';
 import { COLLECTIONS, QR_AMOUNTS, type MemberDoc, type QrAmount, type QrTokenDoc } from '@shared/model';
 import { useSession } from '../auth';
 import {
@@ -46,6 +47,8 @@ export default function Business() {
   // Si el teléfono no es de nadie, el formulario pide también el nombre para darlo de alta.
   const [name, setName] = useState<string | null>(null);
   const [pending, setPending] = useState<(MemberDoc & { id: string })[]>([]);
+  // Recién dado de alta: el asistente llega aquí con `welcome`.
+  const welcome = (useLocation().state as { welcome?: boolean } | null)?.welcome && !stamped;
 
   async function run(action: () => Promise<void>) {
     setBusy(true);
@@ -166,6 +169,12 @@ export default function Business() {
       {qr && <p className="notice" role="status">Este QR ha caducado.</p>}
       {message && <p role="alert">{message}</p>}
 
+      {welcome && (
+        <p className="notice">
+          Elige cuántos sellos das y pulsa «Generar QR». El cliente lo escanea con la cámara del móvil, sin
+          instalar nada.
+        </p>
+      )}
       <h1>Dar sellos</h1>
       <div className="amounts" role="radiogroup" aria-label="Sellos">
         {QR_AMOUNTS.map((n) => (
@@ -207,6 +216,7 @@ export default function Business() {
         </section>
       )}
 
+      <Link className="button secondary" to="/negocio/ajustes">Ajustes</Link>
       <button className="link" onClick={() => signOut(auth)}>Salir</button>
     </main>
   );

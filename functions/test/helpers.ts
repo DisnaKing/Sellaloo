@@ -70,6 +70,7 @@ export async function seedBusiness({
     plan: 'free',
     active,
     createdAt,
+    firstStampAt: null,
   };
   const program: ProgramDoc = {
     ownerUid: OWNER,

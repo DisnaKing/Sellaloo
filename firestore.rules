@@ -1,8 +1,8 @@
 rules_version = '2';
 
 // Las escrituras de sellos, tarjetas, visitas y QR solo las hacen las Cloud Functions (Admin SDK,
-// que se salta estas reglas). Desde el cliente solo se escribe el perfil propio y los datos
-// básicos del comercio. Todo lo que no aparece aquí está denegado.
+// que se salta estas reglas). Desde el cliente solo se escribe el perfil propio, los datos
+// básicos del comercio y su programa. Todo lo que no aparece aquí está denegado.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -35,6 +35,19 @@ service cloud.firestore {
           || (d.dailyVisitLimit is int && d.dailyVisitLimit >= 1 && d.dailyVisitLimit <= 20));
     }
 
+    // Las tarjetas en curso no cambian: copian sellos y premio al crearse.
+    // Los límites de sellos son los de `MIN_STAMPS_REQUIRED` y `MAX_STAMPS_REQUIRED`.
+    function validProgramUpdate() {
+      let d = request.resource.data;
+      return d.diff(resource.data).affectedKeys()
+          .hasOnly(['stampsRequired', 'rewardDescription', 'stampExpiryMonths'])
+        && d.stampsRequired is int && d.stampsRequired >= 2 && d.stampsRequired <= 20
+        && d.rewardDescription is string && d.rewardDescription.size() >= 1
+        && d.rewardDescription.size() <= 80
+        && (d.stampExpiryMonths == null
+          || (d.stampExpiryMonths is int && d.stampExpiryMonths >= 1 && d.stampExpiryMonths <= 24));
+    }
+
     // `phoneVerified` solo es cierto si el teléfono es el mismo con el que se entró por SMS.
     // `email` solo puede ser el de la cuenta.
     function validCustomer() {
@@ -52,6 +65,7 @@ service cloud.firestore {
 
       match /programs/{programId} {
         allow read: if ownerOrAdmin();
+        allow update: if ownsDoc() && validProgramUpdate();
       }
       match /members/{memberId} {
         allow read: if ownerOrAdmin();
@@ -59,10 +73,6 @@ service cloud.firestore {
       match /stats/{statId} {
         allow read: if ownerOrAdmin();
       }
-    }
-
-    match /programTemplates/{templateId} {
-      allow read: if signedIn();
     }
 
     match /customers/{uid} {
