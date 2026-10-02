@@ -65,7 +65,7 @@ export default function Business() {
     run(async () => {
       setStamped(null);
       const { data } = await issueQr({ businessId: businessId!, amount });
-      const image = await QRCode.toDataURL(`${location.origin}/q/${data.token}`, { width: 640, margin: 2 });
+      const image = await QRCode.toDataURL(`${import.meta.env.VITE_PUBLIC_ORIGIN || location.origin}/q/${data.token}`, { width: 640, margin: 2 });
       setQr({ token: data.token, image, deadline: Date.now() + data.ttlSeconds * 1000 });
       setNow(Date.now());
     });

@@ -81,11 +81,13 @@ service cloud.firestore {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
       allow create: if signedIn() && request.auth.uid == uid
         && request.resource.data.keys().hasOnly(
-          ['name', 'email', 'phone', 'phoneVerified', 'privacyAcceptedAt', 'createdAt'])
+          ['name', 'email', 'phone', 'phoneVerified', 'privacyAcceptedAt', 'privacyVersion', 'createdAt'])
         && request.resource.data.keys().hasAll(
-          ['name', 'email', 'phone', 'phoneVerified', 'privacyAcceptedAt', 'createdAt'])
+          ['name', 'email', 'phone', 'phoneVerified', 'privacyAcceptedAt', 'privacyVersion', 'createdAt'])
         && validCustomer()
         && request.resource.data.privacyAcceptedAt == request.time
+        && request.resource.data.privacyVersion is string
+        && request.resource.data.privacyVersion.size() <= 20
         && request.resource.data.createdAt == request.time;
       allow update: if signedIn() && request.auth.uid == uid
         && request.resource.data.diff(resource.data).affectedKeys()

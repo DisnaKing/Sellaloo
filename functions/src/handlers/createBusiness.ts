@@ -3,6 +3,7 @@ import {
   COLLECTIONS,
   DEFAULT_DAILY_VISIT_LIMIT,
   DEFAULT_TIMEZONE,
+  LEGAL_VERSION,
   MAX_STAMPS_REQUIRED,
   MIN_STAMPS_REQUIRED,
   PROGRAM_TEMPLATES,
@@ -59,6 +60,7 @@ export async function handleCreateBusiness(
       active: true,
       createdAt,
       firstStampAt: null,
+      termsVersion: LEGAL_VERSION,
     } satisfies BusinessDoc);
     tx.create(ref.collection(COLLECTIONS.programs).doc(), {
       ownerUid: uid,

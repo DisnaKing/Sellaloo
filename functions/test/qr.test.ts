@@ -103,6 +103,7 @@ describe('redeemQr', () => {
 
     expect(res).toEqual({
       businessName: 'Café Demo',
+      logoUrl: null,
       amount: 1,
       reward: 'Un café gratis',
       cardStamps: 1,

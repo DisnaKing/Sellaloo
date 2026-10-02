@@ -78,6 +78,12 @@ export async function handleRedeemQr(
       result,
     });
 
-    return { ...result, businessName: business.name, amount: qr.amount, reward: program.rewardDescription };
+    return {
+      ...result,
+      businessName: business.name,
+      logoUrl: business.logoUrl,
+      amount: qr.amount,
+      reward: program.rewardDescription,
+    };
   });
 }

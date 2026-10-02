@@ -5,6 +5,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import {
   COLLECTIONS,
   DEFAULT_TIMEZONE,
+  LEGAL_VERSION,
   type BusinessDoc,
   type CardDoc,
   type CustomerDoc,
@@ -36,6 +37,7 @@ async function seedCustomer(uid: string, name: string, phone: string | null, ema
     phone,
     phoneVerified: phone !== null && email === null,
     privacyAcceptedAt: now,
+    privacyVersion: LEGAL_VERSION,
     createdAt: now,
   };
   const cardId = `${uid}-card`;
@@ -93,6 +95,7 @@ const business: BusinessDoc = {
   active: true,
   createdAt: now,
   firstStampAt: now,
+  termsVersion: LEGAL_VERSION,
 };
 const program: ProgramDoc = {
   ownerUid: 'demo-owner',

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { COLLECTIONS, type CardDoc } from '@shared/model';
 import { useSession } from '../auth';
-import { db } from '../lib/firebase';
+import { db, logoUrlOf } from '../lib/firebase';
 import { installPrompt, isIos, isStandalone } from '../lib/install';
 
 const DISMISSED = 'install-dismissed';
@@ -15,6 +15,13 @@ function dismissed(): boolean {
   } catch {
     return false;
   }
+}
+
+// ponytail: una petición a Storage por tarjeta; copiar `logoUrl` en las tarjetas si un cliente tiene muchas.
+function Logo({ ownerUid }: { ownerUid: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => void logoUrlOf(ownerUid).then(setUrl), [ownerUid]);
+  return url ? <img className="logo" src={url} alt="" /> : null;
 }
 
 export default function Cards() {
@@ -70,6 +77,7 @@ export default function Cards() {
       )}
       {visible.map((c) => (
         <article key={c.id} className="card">
+          <Logo ownerUid={c.ownerUid} />
           <h2>{c.businessName}</h2>
           <div className="stamps" role="img" aria-label={`${c.stamps} de ${c.stampsRequired} sellos`}>
             {Array.from({ length: c.stampsRequired }, (_, i) => (

@@ -109,6 +109,10 @@ export async function uploadLogo(uid: string, file: File): Promise<string> {
   return getDownloadURL(logoRef);
 }
 
+/** URL del logo de un comercio, o `null` si no tiene. Los logos los lee cualquiera (`storage.rules`). */
+export const logoUrlOf = (ownerUid: string): Promise<string | null> =>
+  getDownloadURL(ref(storage, `logos/${ownerUid}/logo`)).catch(() => null);
+
 const AUTH_MESSAGES: Record<string, string> = {
   'auth/invalid-credential': 'El correo o la contraseña no son correctos.',
   'auth/email-already-in-use': 'Ya hay una cuenta con este correo. Pulsa «Entrar».',

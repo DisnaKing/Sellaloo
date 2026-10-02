@@ -4,6 +4,7 @@ import type { HandlerDeps } from '../src/handlers/common.js';
 import {
   COLLECTIONS,
   DEFAULT_TIMEZONE,
+  LEGAL_VERSION,
   type BusinessDoc,
   type CardDoc,
   type CustomerDoc,
@@ -72,6 +73,7 @@ export async function seedBusiness({
     active,
     createdAt,
     firstStampAt: null,
+    termsVersion: LEGAL_VERSION,
   };
   const program: ProgramDoc = {
     ownerUid: OWNER,
@@ -93,6 +95,7 @@ export async function seedCustomer(uid: string, name: string): Promise<void> {
     phone: '+34600000000',
     phoneVerified: true,
     privacyAcceptedAt: Timestamp.fromDate(T0),
+    privacyVersion: LEGAL_VERSION,
     createdAt: Timestamp.fromDate(T0),
   };
   await db.collection(COLLECTIONS.customers).doc(uid).set(customer);

@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { LEGAL_VERSION } from '@shared/model';
 
 // BORRADOR: hay que rellenar los datos del titular y revisar el texto con un asesor antes del piloto.
 const OWNER = {
@@ -12,6 +13,7 @@ export default function Legal() {
   return (
     <main className="page">
       <h1>Aviso legal y privacidad</h1>
+      <p>Versión del {LEGAL_VERSION}.</p>
 
       <h2 id="aviso-legal">Aviso legal</h2>
       <p>

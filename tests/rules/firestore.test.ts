@@ -97,7 +97,7 @@ describe('programs', () => {
 });
 
 describe('customers', () => {
-  const base = { name: 'María', email: null, privacyAcceptedAt: serverTimestamp(), createdAt: serverTimestamp() };
+  const base = { name: 'María', email: null, privacyAcceptedAt: serverTimestamp(), privacyVersion: '2026-10-02', createdAt: serverTimestamp() };
 
   it('crea su perfil con el teléfono verificado solo si entró por SMS con ese número', async () => {
     const sms = as(MARIA, { phone_number: PHONE });

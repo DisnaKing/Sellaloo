@@ -11,7 +11,7 @@ import {
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useState, type FormEvent } from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router';
-import { COLLECTIONS } from '@shared/model';
+import { COLLECTIONS, LEGAL_VERSION } from '@shared/model';
 import { useSession } from '../auth';
 import { auth, claimPhoneCards, db, errorMessage } from '../lib/firebase';
 
@@ -155,6 +155,7 @@ function ProfileForm({ run, busy }: { run: Run; busy: boolean }) {
         phone: phoneNumber,
         phoneVerified: phoneNumber !== null,
         privacyAcceptedAt: serverTimestamp(),
+        privacyVersion: LEGAL_VERSION,
         createdAt: serverTimestamp(),
       });
       try {

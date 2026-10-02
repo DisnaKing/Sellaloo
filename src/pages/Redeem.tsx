@@ -36,9 +36,10 @@ export default function Redeem() {
 function Result({ promise }: { promise: Promise<Outcome> }) {
   const outcome = use(promise);
   if (!outcome.ok) return <p className="notice" role="alert">{outcome.message}</p>;
-  const { businessName, amount, cardStamps, stampsRequired, rewardsEarned, reward } = outcome.data;
+  const { businessName, logoUrl, amount, cardStamps, stampsRequired, rewardsEarned, reward } = outcome.data;
   return (
     <>
+      {logoUrl && <img className="logo" src={logoUrl} alt="" />}
       <h1>{businessName}</h1>
       {rewardsEarned > 0 && <p className="notice"><strong>¡Premio conseguido!</strong> {reward}</p>}
       <p>

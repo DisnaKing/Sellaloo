@@ -6,15 +6,16 @@
 
 ## Objetivo actual
 
-- **Fase 7: código preparado, sin commit.** El resto (proyecto real, Blaze, dominio, legales,
-  dispositivos, piloto) lo hace el usuario con `docs/lanzamiento.md`.
+- Fases 1 a 7 hechas en el código. El resto (proyecto real, Blaze, dominio, legales, dispositivos,
+  piloto) lo hace el usuario con `docs/lanzamiento.md`.
 
 ## Estado
 
-- [x] Fases 1 a 6 con commit (la 6 es `ac1aa6c`).
-- [x] Fase 7 (código): `/legal`, App Check opcional, iconos PNG y *chunk* de Firebase.
+- [x] Fases 1 a 7 con commit (la 7 es `5f30977`).
+- [x] Tras la 7 (sin commit): logo en las tarjetas del cliente y versión de `/legal` aceptada
+  (`LEGAL_VERSION`; cámbiala al cambiar los textos).
 - [ ] Repositorio en GitHub: **espera el OK del usuario**.
-- [ ] Pregunta pendiente: emuladores en `0.0.0.0` para probar desde el móvil.
+- [x] Móvil: emuladores en `0.0.0.0` y `VITE_PUBLIC_ORIGIN` para el QR. Probado con el móvil real.
 - [ ] Desplegar la base en Spark (fase 0): necesita el proyecto real de Firebase.
 
 ## Contexto relevante

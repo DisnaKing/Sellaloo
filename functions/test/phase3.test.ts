@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { handleCreateBusiness } from '../src/handlers/createBusiness.js';
 import { handleIssueQr } from '../src/handlers/issueQr.js';
 import { handleRedeemQr } from '../src/handlers/redeemQr.js';
-import { COLLECTIONS, type BusinessDoc, type ProgramDoc } from '../src/shared/model.js';
+import { COLLECTIONS, LEGAL_VERSION, type BusinessDoc, type ProgramDoc } from '../src/shared/model.js';
 import { MARIA, T0, at, clearFirestore, db, getData, seedCustomer } from './helpers.js';
 
 const NEW_OWNER = 'owner-2';
@@ -30,6 +30,7 @@ describe('createBusiness', () => {
       timezone: 'Europe/Madrid',
       active: true,
       firstStampAt: null,
+      termsVersion: LEGAL_VERSION,
     });
     const programs = await db.collection(`${COLLECTIONS.businesses}/${businessId}/${COLLECTIONS.programs}`).get();
     expect(programs.docs.map((d) => d.data() as ProgramDoc)).toMatchObject([

@@ -7,11 +7,11 @@ qué de cada colección y quién puede leerla.
 
 | Colección | Para qué | Campos clave |
 |---|---|---|
-| `businesses/{id}` | comercio | `ownerUid`, `name`, `type`, `logoUrl`, `timezone`, `dailyVisitLimit`, `plan`, `active`, `firstStampAt` (para la métrica del onboarding) |
+| `businesses/{id}` | comercio | `ownerUid`, `name`, `type`, `logoUrl`, `timezone`, `dailyVisitLimit`, `plan`, `active`, `firstStampAt` (para la métrica del onboarding), `termsVersion` (versión de `/legal` aceptada) |
 | `businesses/{id}/programs/{id}` | tarjeta del comercio (una activa en el MVP) | `stampsRequired`, `rewardDescription`, `stampExpiryMonths` (nulo = no caducan), `active` |
 | `businesses/{id}/members/{id}` | cliente dentro del comercio, para listar y buscar | `customerId` (nulo si lo creó el dueño a mano), `name`, `searchName` (nombre en minúsculas y sin acentos, para buscar por prefijo), `phone`, `phoneVerified`, `currentStamps`, `rewardsPending`, `activeCardId`, `lastVisitAt` |
 | `businesses/{id}/stats/{AAAA-MM \| total}` | contadores del panel | `visits`, `qrVisits`, `phoneVisits`, `stamps`, `rewardsEarned`, `rewardsRedeemed`, `newMembers`, `phoneSignups`, `flowMsTotal`; se actualizan en la misma transacción que el sello (y se restan al deshacer). El panel los lee con `where(documentId(), '>=', mes)`: trae el mes y `total`, y no falla si el mes aún no existe |
-| `customers/{uid}` | cliente final | `name`, `email`, `phone` (opcional), `phoneVerified`, `privacyAcceptedAt` |
+| `customers/{uid}` | cliente final | `name`, `email`, `phone` (opcional), `phoneVerified`, `privacyAcceptedAt`, `privacyVersion` (versión de `/legal` aceptada) |
 | `cards/{id}` | tarjeta de un cliente | `businessId`, `businessName`, `ownerUid`, `memberId`, `customerId`, `customerPhone`, `stamps`, `stampsRequired`, `reward`, `status` (`active` / `reward_pending` / `redeemed`), `completedAt`, `redeemedAt`, `stampsExpireAt` (nulo = no caducan) |
 | `qrTokens/{token}` | QR de un solo uso | `businessId`, `ownerUid`, `amount` (1–3), `createdAt`, `expiresAt` (+150 s), `usedAt`, `usedByName`, `result` |
 | `visits/{id}` | una entrega de sellos | `businessId`, `ownerUid`, `memberId`, `amount`, `method` (`qr` / `phone`), `localDate`, `allocations` (`[{cardId, count, created}]`), `flowMs`, `undoneAt` |

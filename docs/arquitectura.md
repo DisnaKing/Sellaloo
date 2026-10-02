@@ -68,5 +68,10 @@ y costes en [costes.md](costes.md).
 - `lib/firebase.ts` conecta con los emuladores en el mismo `location.hostname` de la página. Para
   probar dos sesiones en un navegador se usan `localhost:5173` y `127.0.0.1:5173` (Vite con
   `--host`). `[::1]` no sirve, porque los emuladores solo escuchan en IPv4.
+- Desde el móvil: Auth, Firestore, Functions y Storage escuchan en `0.0.0.0`, así que basta abrir
+  `http://<IP del PC>:5173` en la misma wifi. El cortafuegos de Windows tiene que dejar pasar Node y
+  Java en redes privadas. Por HTTP no hay *service worker*, así que la PWA no se instala.
+  Para escanear el QR con el móvil y dejar el comercio en el PC, pon en `.env.local`
+  `VITE_PUBLIC_ORIGIN=http://<IP del PC>:5173` y reinicia Vite: el QR usa ese origen.
 - El emulador de Auth no envía SMS: el código se lee en
   `http://127.0.0.1:9099/emulator/v1/projects/demo-sellaloo/verificationCodes`.

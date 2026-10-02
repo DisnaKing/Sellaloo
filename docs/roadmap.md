@@ -1,7 +1,7 @@
 # Roadmap del MVP — Sellaloo
 
 > **Estado (2026-10-01):** aprobado; las 5 decisiones del final están aceptadas.
-> **2026-10-02:** fases 1, 2 y 3 terminadas en emuladores. De la fase 0 falta desplegar en Spark, que
+> **2026-10-02:** fases 1 a 6 terminadas en emuladores y fase 7 preparada en el código. De la fase 0 falta desplegar en Spark, que
 > requiere el proyecto real de Firebase (ver `MEMORY.md`).
 > **Fuente:** [producto/funcionalidades-mvp.md](producto/funcionalidades-mvp.md), transcrito de
 > `Sellaloo_funcionalidades_MVP.docx`.
@@ -192,7 +192,7 @@ Todo esto queda cubierto por los tests de las Functions.
 - Cambios respecto al plan:
   - las plantillas viven en el código (`PROGRAM_TEMPLATES`), no en una colección;
   - el logo se guarda en WebP, o en JPEG si el navegador no sabe generar WebP (Safari);
-  - el logo todavía no sale en las tarjetas del cliente;
+  - las tarjetas del cliente piden el logo a Storage una vez por tarjeta (no se copia en `cards`);
   - en Ajustes, el límite diario es 1, 2, 3 o sin límite, y la caducidad 3, 6 o 12 meses.
 - Falta el cronometraje con una persona real.
 
@@ -354,7 +354,7 @@ dentro de lo previsto.
 - Iconos PNG (`apple-touch-icon` de 180 px, 192 px y 512 px *maskable*), generados desde `icon.svg`.
 - Firebase en su propio *chunk* (unos 600 kB, 180 kB con gzip), con el aviso subido a 800 kB.
 - **Simplificaciones:**
-  - no se guarda qué versión del texto legal se aceptó;
+  - la versión de `/legal` aceptada (`LEGAL_VERSION`) se guarda en `termsVersion` y `privacyVersion`, pero no hay que volver a aceptarla si cambia;
   - el SDK de App Check se carga aunque no haya clave (unos 14 kB).
 - **Pendiente del usuario:** proyecto real, Blaze, dominio, datos legales, dispositivos y piloto.
 

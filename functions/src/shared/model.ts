@@ -20,6 +20,9 @@ export const QR_TTL_SECONDS = 150;
 export const QR_AMOUNTS = [1, 2, 3] as const;
 export type QrAmount = (typeof QR_AMOUNTS)[number];
 
+/** Versión de los textos de `/legal`. Cámbiala al cambiarlos: se guarda con cada aceptación. */
+export const LEGAL_VERSION = '2026-10-02';
+
 export const DEFAULT_TIMEZONE = 'Europe/Madrid';
 /** Visitas con sello al día por cliente y comercio; `null` significa sin límite. */
 export const DEFAULT_DAILY_VISIT_LIMIT = 1;
@@ -75,6 +78,8 @@ export interface BusinessDoc {
   createdAt: TimestampLike;
   /** Primer sello dado; con `createdAt` mide cuánto tarda el alta. */
   firstStampAt: TimestampLike | null;
+  /** Versión de `/legal` que aceptó el dueño al darse de alta (en `createdAt`). */
+  termsVersion: string;
 }
 
 export interface ProgramDoc {
@@ -130,6 +135,7 @@ export interface CustomerDoc {
   phone: string | null;
   phoneVerified: boolean;
   privacyAcceptedAt: TimestampLike;
+  privacyVersion: string;
   createdAt: TimestampLike;
 }
 
@@ -228,6 +234,7 @@ export interface RedeemQrRequest {
 
 export interface RedeemQrResponse extends StampResult {
   businessName: string;
+  logoUrl: string | null;
   amount: number;
   reward: string;
 }
