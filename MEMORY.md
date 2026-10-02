@@ -12,7 +12,7 @@
 ## Estado
 
 - [x] Fases 1 a 7 con commit (la 7 es `5f30977`).
-- [x] Tras la 7 (sin commit): logo en las tarjetas del cliente y versión de `/legal` aceptada
+- [x] Tras la 7 (`05e0f72`): logo en las tarjetas del cliente y versión de `/legal` aceptada
   (`LEGAL_VERSION`; cámbiala al cambiar los textos).
 - [ ] Repositorio en GitHub: **espera el OK del usuario**.
 - [x] Móvil: emuladores en `0.0.0.0` y `VITE_PUBLIC_ORIGIN` para el QR. Probado con el móvil real.
