@@ -36,11 +36,20 @@ export async function clearFirestore(): Promise<void> {
   if (!res.ok) throw new Error(`No se pudo vaciar el emulador: ${res.status}`);
 }
 
+export async function clearAuth(): Promise<void> {
+  const res = await fetch(
+    `http://${process.env.FIREBASE_AUTH_EMULATOR_HOST}/emulator/v1/projects/${process.env.GCLOUD_PROJECT}/accounts`,
+    { method: 'DELETE' },
+  );
+  if (!res.ok) throw new Error(`No se pudo vaciar Auth: ${res.status}`);
+}
+
 interface BusinessOptions {
   id?: string;
   active?: boolean;
   dailyVisitLimit?: number | null;
   stampsRequired?: number;
+  stampExpiryMonths?: number | null;
 }
 
 export async function seedBusiness({
@@ -48,6 +57,7 @@ export async function seedBusiness({
   active = true,
   dailyVisitLimit = 1,
   stampsRequired = 10,
+  stampExpiryMonths = null,
 }: BusinessOptions = {}): Promise<void> {
   const createdAt = Timestamp.fromDate(T0);
   const business: BusinessDoc = {
@@ -65,7 +75,7 @@ export async function seedBusiness({
     ownerUid: OWNER,
     stampsRequired,
     rewardDescription: 'Un café gratis',
-    stampExpiryMonths: null,
+    stampExpiryMonths,
     active: true,
     createdAt,
   };
@@ -106,6 +116,7 @@ export async function seedActiveCard(uid: string, name: string, stamps: number, 
     lastStampAt: ts,
     completedAt: null,
     redeemedAt: null,
+    stampsExpireAt: null,
   };
   const member: MemberDoc = {
     ownerUid: OWNER,

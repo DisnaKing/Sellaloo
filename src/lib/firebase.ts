@@ -2,7 +2,21 @@ import { initializeApp } from 'firebase/app';
 import { browserPopupRedirectResolver, connectAuthEmulator, indexedDBLocalPersistence, initializeAuth } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions';
-import { REGION, type ErrorReason, type IssueQrRequest, type IssueQrResponse, type RedeemQrRequest, type RedeemQrResponse } from '@shared/model';
+import {
+  REGION,
+  type AddMemberRequest,
+  type AddMemberResponse,
+  type ErrorReason,
+  type IssueQrRequest,
+  type IssueQrResponse,
+  type RedeemQrRequest,
+  type RedeemQrResponse,
+  type RedeemRewardRequest,
+  type StampByPhoneRequest,
+  type StampByPhoneResponse,
+  type UndoLastVisitRequest,
+  type UndoLastVisitResponse,
+} from '@shared/model';
 
 // La configuración web de Firebase es pública. Sin `.env`, la app usa el proyecto demo y los emuladores.
 const env = import.meta.env;
@@ -32,6 +46,10 @@ if (projectId.startsWith('demo-')) {
 
 export const issueQr = httpsCallable<IssueQrRequest, IssueQrResponse>(functions, 'issueQr');
 export const redeemQr = httpsCallable<RedeemQrRequest, RedeemQrResponse>(functions, 'redeemQr');
+export const addMember = httpsCallable<AddMemberRequest, AddMemberResponse>(functions, 'addMember');
+export const stampByPhone = httpsCallable<StampByPhoneRequest, StampByPhoneResponse>(functions, 'stampByPhone');
+export const undoLastVisit = httpsCallable<UndoLastVisitRequest, UndoLastVisitResponse>(functions, 'undoLastVisit');
+export const redeemReward = httpsCallable<RedeemRewardRequest, void>(functions, 'redeemReward');
 
 const MESSAGES: Record<ErrorReason, string> = {
   'unauthenticated': 'Tienes que entrar primero.',
@@ -45,6 +63,12 @@ const MESSAGES: Record<ErrorReason, string> = {
   'daily-limit': 'Hoy ya has recibido tu sello aquí.',
   'profile-required': 'Completa tu perfil para recibir el sello.',
   'own-business': 'No puedes darte sellos en tu propio comercio.',
+  'invalid-phone': 'Ese teléfono no es válido.',
+  'phone-taken': 'Ya hay un cliente con ese teléfono.',
+  'unknown-phone': 'No hay ningún cliente con ese teléfono.',
+  'nothing-to-undo': 'No hay ninguna visita que deshacer.',
+  'undo-expired': 'Solo se pueden deshacer las visitas de hoy.',
+  'already-redeemed': 'Ese premio ya se ha canjeado.',
 };
 
 const AUTH_MESSAGES: Record<string, string> = {

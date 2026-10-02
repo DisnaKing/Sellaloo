@@ -12,3 +12,10 @@ export function localDate(date: Date, timeZone: string): string {
 export function localMonth(date: Date, timeZone: string): string {
   return localDate(date, timeZone).slice(0, 7);
 }
+
+/** `date` más `months` meses. Si el día no existe en el mes de destino, pasa al mes siguiente (31 ene + 1 = 3 mar). */
+export function addMonths(date: Date, months: number): Date {
+  const d = new Date(date);
+  d.setUTCMonth(d.getUTCMonth() + months);
+  return d;
+}

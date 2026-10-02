@@ -64,7 +64,7 @@ Es el plan ya aprobado. Comprende:
   caducado, el login por SMS y «Salir».
 - Sin probar en el navegador: «¡Premio conseguido!» en las dos pantallas (lo cubren los tests).
 - Pendiente para otras fases: el teléfono opcional de los clientes por correo (fase 5), ocultar las
-  tarjetas canjeadas (con el canje, fase 2), el icono PNG para iOS y
+  tarjetas canjeadas (hecho en la fase 2), el icono PNG para iOS y
   partir el *chunk* de Firebase de más de 500 kB (fase 7).
 
 **Funcionalidades:**
@@ -131,6 +131,20 @@ tarda unos segundos más. Se mide en el piloto. Si molesta, se pone `minInstance
 - el aviso aparece en la pantalla del dueño sin que toque nada.
 
 ## Fase 2 — Resto del motor de sellos
+
+**Estado (2026-10-02): hecha, sin commit.**
+- Functions `addMember`, `stampByPhone`, `undoLastVisit` y `redeemReward`. El reparto de sellos
+  vive en `handlers/stamp.ts` y lo comparten el QR y el teléfono. 13 tests nuevos contra el
+  emulador (`functions/test/phase2.test.ts`).
+- Web `/negocio`: sellar por teléfono (con alta si el teléfono es nuevo), «Deshacer» tras cada
+  sello y la lista «Premios pendientes» con «Entregar». `/tarjetas` oculta las canjeadas y muestra
+  0 sellos si han caducado.
+- Probado en el navegador: alta y sello de Pepe, «Deshacer», QR de 2 que completa la tarjeta de
+  Juan y entrega del premio.
+- Cambio respecto al plan: en vez del aviso «María tiene un premio pendiente · Canjear», el dueño
+  ve siempre la lista de premios pendientes.
+- Límite conocido: si los sellos caducan al sellar y luego se deshace esa visita, los sellos
+  caducados no vuelven.
 
 - **Alta manual de un cliente:**
   - el dueño escribe nombre y teléfono, y el teléfono se normaliza a +34 con `libphonenumber-js`;

@@ -37,7 +37,13 @@ export type ErrorReason =
   | 'used'
   | 'daily-limit'
   | 'profile-required'
-  | 'own-business';
+  | 'own-business'
+  | 'invalid-phone'
+  | 'phone-taken'
+  | 'unknown-phone'
+  | 'nothing-to-undo'
+  | 'undo-expired'
+  | 'already-redeemed';
 
 export interface ErrorDetails {
   reason: ErrorReason;
@@ -124,6 +130,8 @@ export interface CardDoc {
   lastStampAt: TimestampLike | null;
   completedAt: TimestampLike | null;
   redeemedAt: TimestampLike | null;
+  /** Si llega esta fecha sin otra visita, los sellos de la tarjeta activa vuelven a 0; `null` = no caducan. */
+  stampsExpireAt: TimestampLike | null;
 }
 
 /** Resultado de canjear un QR; lo ven el cliente (respuesta) y el dueño (en el token). */
@@ -202,4 +210,40 @@ export interface RedeemQrResponse extends StampResult {
   businessName: string;
   amount: number;
   reward: string;
+}
+
+export interface AddMemberRequest {
+  businessId: string;
+  name: string;
+  phone: string;
+}
+
+export interface AddMemberResponse {
+  memberId: string;
+  /** Teléfono normalizado (E.164). */
+  phone: string;
+}
+
+export interface StampByPhoneRequest {
+  businessId: string;
+  phone: string;
+  amount?: QrAmount;
+}
+
+export interface StampByPhoneResponse extends StampResult {
+  memberId: string;
+  name: string;
+}
+
+export interface UndoLastVisitRequest {
+  businessId: string;
+}
+
+export interface UndoLastVisitResponse {
+  name: string;
+  amount: number;
+}
+
+export interface RedeemRewardRequest {
+  cardId: string;
 }

@@ -8,6 +8,7 @@ import { auth, db } from '../lib/firebase';
 export default function Cards() {
   const { user } = useSession()!;
   const [cards, setCards] = useState<(CardDoc & { id: string })[] | null>(null);
+  const [now] = useState(Date.now);
 
   useEffect(
     () =>
@@ -18,12 +19,15 @@ export default function Cards() {
   );
 
   if (!cards) return <p className="page">Cargando…</p>;
-  // ponytail: las tarjetas canjeadas se muestran igual; filtrarlas cuando exista el canje (fase 2).
+  const visible = cards
+    .filter((c) => c.status !== 'redeemed')
+    // Los sellos caducados no se borran hasta el siguiente sello; aquí ya se muestran a cero.
+    .map((c) => (c.stampsExpireAt && c.stampsExpireAt.toMillis() <= now ? { ...c, stamps: 0 } : c));
   return (
     <main className="page">
       <h1>Mis tarjetas</h1>
-      {cards.length === 0 && <p>Aún no tienes sellos. Escanea el QR de un comercio para empezar.</p>}
-      {cards.map((c) => (
+      {visible.length === 0 && <p>Aún no tienes sellos. Escanea el QR de un comercio para empezar.</p>}
+      {visible.map((c) => (
         <article key={c.id} className="card">
           <h2>{c.businessName}</h2>
           <p className="stamps" aria-label={`${c.stamps} de ${c.stampsRequired} sellos`}>

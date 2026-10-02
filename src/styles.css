@@ -66,3 +66,5 @@ input {
 .card { padding: 16px; border: 2px solid #ddd; border-radius: 12px; }
 .card h2 { margin: 0; }
 .stamps { font-size: 28px; letter-spacing: 4px; color: var(--brand); margin: 8px 0; }
+.notice p { margin: 0 0 12px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #ddd; }

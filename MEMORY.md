@@ -6,8 +6,8 @@
 
 ## Objetivo actual
 
-- **Fase 1 terminada** (ver el estado en `docs/roadmap.md`). Parado a la espera del usuario.
-  **No empezar la fase 2** sin que lo pida.
+- **Fase 2 terminada, sin commit** (estado en `docs/roadmap.md`). Esperando al usuario: commit y
+  siguiente fase solo cuando lo pida.
 
 ## Estado
 
@@ -17,7 +17,9 @@
 - [x] Prueba con dos navegadores: «Sello dado a María.» en unos 3 s.
 - [x] Docs: `docs/producto/funcionalidades-mvp.md`, `arquitectura.md`, `modelo-datos.md` y
   `costes.md`.
-- [ ] Primer commit y repositorio en GitHub: **esperan el OK del usuario**.
+- [x] Commit de la fase 1 (`34f6915`).
+- [x] Fase 2: callables `addMember`, `stampByPhone`, `undoLastVisit`, `redeemReward`; web y tests.
+- [ ] Commit de la fase 2 y repositorio en GitHub: **esperan el OK del usuario**.
 - [ ] Desplegar la base en Spark (fase 0): necesita el proyecto real de Firebase.
 
 ## Contexto relevante
@@ -27,8 +29,9 @@
 - Los tests de emulador llaman a los handlers directamente (`functions/test/helpers.ts`).
 - Las consultas del dueño sobre `cards` tienen que filtrar por `ownerUid`, o las reglas las rechazan.
 - Sin comprobar todavía: las TTL de `firestore.indexes.json` al desplegar.
-- Seed: `dueno@demo.es` (dueño de `demo-cafe`), `juan@demo.es`, `admin@demo.es` y María por SMS
-  (`+34600000001`). Contraseña en la salida del seed.
+- Seed: `dueno@demo.es` (dueño de `demo-cafe`), `juan@demo.es` (8 sellos, sin teléfono),
+  `admin@demo.es` y María por SMS (`+34600000001`, 3 sellos). Contraseña en la salida del seed.
+- Consulta de `members` con `ownerUid` + `rewardsPending > 0`: necesita índice compuesto (añadido).
 
 ## Notas y aprendizajes
 

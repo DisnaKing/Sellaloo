@@ -54,6 +54,7 @@ async function seedCustomer(uid: string, name: string, phone: string | null, ema
     lastStampAt: now,
     completedAt: null,
     redeemedAt: null,
+    stampsExpireAt: null,
   };
   const member: MemberDoc = {
     ownerUid: 'demo-owner',

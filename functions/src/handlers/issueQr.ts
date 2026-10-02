@@ -2,13 +2,12 @@ import { randomBytes } from 'node:crypto';
 import { Timestamp } from 'firebase-admin/firestore';
 import {
   COLLECTIONS,
-  QR_AMOUNTS,
   QR_TTL_SECONDS,
   type BusinessDoc,
   type IssueQrResponse,
   type QrAmount,
 } from '../shared/model.js';
-import { asRecord, fail, isDocId, requireUid, type HandlerDeps } from './common.js';
+import { asRecord, fail, isDocId, parseAmount, requireUid, type HandlerDeps } from './common.js';
 
 /** Genera un QR de un solo uso con 1, 2 o 3 sellos. Solo lo puede pedir el dueño del comercio. */
 export async function handleIssueQr(
@@ -52,8 +51,5 @@ export async function handleIssueQr(
 function parseRequest(data: unknown): { businessId: string; amount: QrAmount } {
   const { businessId, amount = 1 } = asRecord(data);
   if (!isDocId(businessId)) fail('invalid-argument', 'invalid-argument', 'Falta el comercio.');
-  if (!QR_AMOUNTS.includes(amount as QrAmount)) {
-    fail('invalid-argument', 'invalid-argument', 'El QR puede dar 1, 2 o 3 sellos.');
-  }
-  return { businessId, amount: amount as QrAmount };
+  return { businessId, amount: parseAmount(amount) };
 }
