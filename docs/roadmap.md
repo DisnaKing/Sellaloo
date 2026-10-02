@@ -180,7 +180,7 @@ Todo esto queda cubierto por los tests de las Functions.
 
 ## Fase 3 — Alta del comercio y onboarding (menos de 5 minutos)
 
-**Estado (2026-10-02): hecha, sin commit.**
+**Estado (2026-10-02): hecha (`90ff097`).**
 - Callable `createBusiness` y 4 tests contra el emulador (`functions/test/phase3.test.ts`). El
   primer sello de cada comercio guarda `firstStampAt`, que sirve para la métrica.
 - Web: «Crear mi comercio» en la portada y en el login del dueño, asistente `/negocio/alta`, aviso
@@ -242,6 +242,11 @@ Todo esto queda cubierto por los tests de las Functions.
 **Hecho cuando:**
 - con 300 clientes de prueba, buscar por las primeras letras responde en menos de 1 segundo;
 - el panel cuadra con las visitas, también después de deshacer un sello.
+
+**Estado (2026-10-02): hecha, sin commit.** Probada en el navegador con `npm run seed -- --muchos`.
+El nombre solo se busca por el principio (no por el apellido) y un teléfono sin prefijo se toma como
+español (+34). El panel lee el mes y el total con una consulta de rango sobre `stats`, porque las
+reglas rechazan el `get` de un mes que todavía no tiene documento.
 
 ## Fase 5 — Zona del cliente
 

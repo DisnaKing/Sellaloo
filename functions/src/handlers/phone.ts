@@ -10,6 +10,7 @@ import {
   type MemberDoc,
   type ProgramDoc,
   type StampByPhoneResponse,
+  toSearchName,
 } from '../shared/model.js';
 import { asRecord, fail, isDocId, parseAmount, requireUid, type HandlerDeps } from './common.js';
 import { addStats, readOwnedBusiness, stamp, type StampInput } from './stamp.js';
@@ -51,6 +52,7 @@ export async function handleAddMember(
       businessId,
       customerId: null,
       name,
+      searchName: toSearchName(name),
       phone,
       phoneVerified: false,
       currentStamps: 0,

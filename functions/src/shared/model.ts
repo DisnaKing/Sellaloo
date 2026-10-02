@@ -87,12 +87,18 @@ export interface ProgramDoc {
   createdAt: TimestampLike;
 }
 
+/** Normaliza un nombre para buscar: «José» y «jose» dan lo mismo. */
+export const toSearchName = (name: string): string =>
+  name.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim();
+
 export interface MemberDoc {
   ownerUid: string;
   businessId: string;
   /** `null` si el dueño lo dio de alta a mano y aún no tiene cuenta. */
   customerId: string | null;
   name: string;
+  /** `name` en minúsculas y sin acentos, para buscar por prefijo (ver `toSearchName`). */
+  searchName: string;
   phone: string | null;
   phoneVerified: boolean;
   currentStamps: number;

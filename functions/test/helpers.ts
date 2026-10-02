@@ -9,6 +9,7 @@ import {
   type CustomerDoc,
   type MemberDoc,
   type ProgramDoc,
+  toSearchName,
 } from '../src/shared/model.js';
 
 export { db };
@@ -124,6 +125,7 @@ export async function seedActiveCard(uid: string, name: string, stamps: number, 
     businessId: BUSINESS,
     customerId: uid,
     name,
+    searchName: toSearchName(name),
     phone: '+34600000000',
     phoneVerified: true,
     currentStamps: stamps,

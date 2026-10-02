@@ -118,7 +118,7 @@ describe('redeemQr', () => {
     expect(qr?.usedAt?.toMillis()).toBe(T0.getTime() + 5000);
 
     const member = await getData<MemberDoc>(`${COLLECTIONS.businesses}/${BUSINESS}/${COLLECTIONS.members}/${MARIA}`);
-    expect(member).toMatchObject({ customerId: MARIA, name: 'María', currentStamps: 1, rewardsPending: 0 });
+    expect(member).toMatchObject({ customerId: MARIA, name: 'María', searchName: 'maria', currentStamps: 1, rewardsPending: 0 });
     const card = await getData<CardDoc>(`${COLLECTIONS.cards}/${member?.activeCardId}`);
     expect(card).toMatchObject({
       businessName: 'Café Demo',

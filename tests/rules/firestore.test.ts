@@ -8,6 +8,7 @@ import {
 import {
   collection,
   doc,
+  documentId,
   getDoc,
   getDocs,
   query,
@@ -53,6 +54,7 @@ beforeEach(async () => {
     });
     await setDoc(doc(db, 'cards/c1'), { ownerUid: OWNER, customerId: MARIA, stamps: 3 });
     await setDoc(doc(db, 'qrTokens/t1'), { ownerUid: OWNER });
+    await setDoc(doc(db, 'businesses/cafe/stats/total'), { ownerUid: OWNER, newMembers: 1 });
     await setDoc(doc(db, 'dailyVisits/d1'), { ownerUid: OWNER });
   });
 });
@@ -121,6 +123,16 @@ describe('cards', () => {
   it('nadie escribe tarjetas desde el cliente, ni el dueño', async () => {
     await assertFails(updateDoc(doc(as(OWNER), 'cards/c1'), { stamps: 10 }));
     await assertFails(updateDoc(doc(as(MARIA), 'cards/c1'), { stamps: 10 }));
+  });
+});
+
+describe('stats', () => {
+  it('el panel los pide con una consulta: el mes sin documento no la hace fallar', async () => {
+    const stats = (uid: string) =>
+      getDocs(query(collection(as(uid), 'businesses/cafe/stats'), where('ownerUid', '==', OWNER), where(documentId(), '>=', '2026-10')));
+    await assertSucceeds(stats(OWNER));
+    await assertFails(getDoc(doc(as(OWNER), 'businesses/cafe/stats/2026-10')));
+    await assertFails(stats('otro'));
   });
 });
 

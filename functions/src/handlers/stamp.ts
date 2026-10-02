@@ -19,6 +19,7 @@ import {
   type StampResult,
   type VisitAllocation,
   type VisitMethod,
+  toSearchName,
 } from '../shared/model.js';
 import { fail } from './common.js';
 
@@ -131,6 +132,7 @@ export async function stamp(
       businessId,
       customerId: holder.customerId,
       name: holder.name,
+      searchName: toSearchName(holder.name),
       phone: holder.phone,
       phoneVerified: holder.phoneVerified,
       currentStamps: activeStamps,

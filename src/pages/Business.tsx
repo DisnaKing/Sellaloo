@@ -216,6 +216,7 @@ export default function Business() {
         </section>
       )}
 
+      <Link className="button secondary" to="/negocio/clientes">Clientes</Link>
       <Link className="button secondary" to="/negocio/ajustes">Ajustes</Link>
       <button className="link" onClick={() => signOut(auth)}>Salir</button>
     </main>

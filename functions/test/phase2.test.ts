@@ -58,6 +58,7 @@ describe('addMember', () => {
     expect(phone).toBe(PEPE_PHONE);
     expect(await member(memberId)).toMatchObject({
       name: 'Pepe',
+      searchName: 'pepe',
       customerId: null,
       phoneVerified: false,
       ownerUid: OWNER,

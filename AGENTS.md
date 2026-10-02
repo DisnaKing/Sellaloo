@@ -49,7 +49,7 @@ tests/rules/             tests de firestore.rules y storage.rules contra el emul
 | Acción | Comando |
 |---|---|
 | Instalar | `npm install` (instala también `functions/` con `postinstall`) |
-| Desarrollo | `npm run emulators`, `npm run seed` y `npm run dev -- --host` |
+| Desarrollo | `npm run emulators`, `npm run seed` (`-- --muchos` añade 300 clientes) y `npm run dev -- --host` |
 | Tests unitarios | `npm test` |
 | Tests contra el emulador | `npm run test:emulator` |
 | Typecheck | `npm run typecheck` (solo de Functions: `npm --prefix functions run typecheck`) |
