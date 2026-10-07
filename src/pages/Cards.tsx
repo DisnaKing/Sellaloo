@@ -18,10 +18,12 @@ function dismissed(): boolean {
 }
 
 // ponytail: una petición a Storage por tarjeta; copiar `logoUrl` en las tarjetas si un cliente tiene muchas.
-function Logo({ ownerUid }: { ownerUid: string }) {
+/** El logo del comercio o, si no tiene, sus iniciales («Café Demo» → «CD»). */
+function Logo({ ownerUid, name }: { ownerUid: string; name: string }) {
   const [url, setUrl] = useState<string | null>(null);
   useEffect(() => void logoUrlOf(ownerUid).then(setUrl), [ownerUid]);
-  return url ? <img className="logo" src={url} alt="" /> : null;
+  const initials = name.split(/\s+/).slice(0, 2).map((word) => word[0]).join('').toUpperCase();
+  return <span className="mark" aria-hidden="true">{url ? <img src={url} alt="" /> : initials}</span>;
 }
 
 export default function Cards() {
@@ -76,21 +78,26 @@ export default function Cards() {
         </div>
       )}
       {visible.map((c) => (
-        <article key={c.id} className="card">
-          <Logo ownerUid={c.ownerUid} />
-          <h2>{c.businessName}</h2>
-          <div className="stamps" role="img" aria-label={`${c.stamps} de ${c.stampsRequired} sellos`}>
+        <article key={c.id} className="stamp-card">
+          <header>
+            <Logo ownerUid={c.ownerUid} name={c.businessName} />
+            <h2>{c.businessName}</h2>
+            <span className="count">{c.stamps}/{c.stampsRequired}</span>
+          </header>
+          <div className="slots" role="img" aria-label={`${c.stamps} de ${c.stampsRequired} sellos`}>
             {Array.from({ length: c.stampsRequired }, (_, i) => (
-              <span key={i} className={i < c.stamps ? 'on' : ''} />
+              // La última casilla, mientras está vacía, enseña el premio.
+              <span key={i} className={i < c.stamps ? 'on' : i === c.stampsRequired - 1 ? 'prize' : ''} />
             ))}
           </div>
-          <p>
-            {c.status === 'reward_pending' ? (
+          {c.status === 'reward_pending' ? (
+            <p className="pending">
               <strong>Premio pendiente: {c.reward}. Enséñaselo al comercio.</strong>
-            ) : (
-              `Te ${c.stampsRequired - c.stamps === 1 ? 'falta' : 'faltan'} ${c.stampsRequired - c.stamps} para: ${c.reward}`
-            )}
-          </p>
+              <span className="prize-stamp" aria-hidden="true">¡PREMIO!</span>
+            </p>
+          ) : (
+            <p>{`Te ${c.stampsRequired - c.stamps === 1 ? 'falta' : 'faltan'} ${c.stampsRequired - c.stamps} para: ${c.reward}`}</p>
+          )}
         </article>
       ))}
       <Link className="button secondary" to="/perfil">Mi perfil</Link>

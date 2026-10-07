@@ -4,6 +4,10 @@ import { createBrowserRouter, Link, Navigate } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 import { AuthProvider, RequireRole, useSession, type Role } from './auth';
 import './lib/install';
+// Las fuentes se sirven desde la app: sin peticiones a Google Fonts (RGPD).
+import '@fontsource/atkinson-hyperlegible/400.css';
+import '@fontsource/atkinson-hyperlegible/700.css';
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
 import './styles.css';
 
 function Home() {
@@ -14,7 +18,7 @@ function Home() {
   if (session?.role === 'admin') return <Navigate to="/admin" replace />;
   return (
     <main className="page">
-      <h1>Sellaloo</h1>
+      <h1 className="brand">Sellaloo</h1>
       <Link className="button" to="/entrar">Ver mis tarjetas</Link>
       <Link className="button secondary" to="/negocio/entrar">Soy un comercio</Link>
       <Link className="button secondary" to="/negocio/alta">Crear mi comercio</Link>

@@ -115,6 +115,9 @@ export const logoUrlOf = (ownerUid: string): Promise<string | null> =>
 
 const AUTH_MESSAGES: Record<string, string> = {
   'auth/invalid-credential': 'El correo o la contraseña no son correctos.',
+  // Sin la protección contra la enumeración de correos (los emuladores, por ejemplo) llegan estos dos en su lugar.
+  'auth/wrong-password': 'El correo o la contraseña no son correctos.',
+  'auth/user-not-found': 'El correo o la contraseña no son correctos.',
   'auth/email-already-in-use': 'Ya hay una cuenta con este correo. Pulsa «Entrar».',
   'auth/weak-password': 'La contraseña necesita al menos 6 caracteres.',
   'auth/invalid-email': 'Ese correo no es válido.',

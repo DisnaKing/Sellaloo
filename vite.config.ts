@@ -12,8 +12,8 @@ export default defineConfig({
         name: 'Sellaloo',
         short_name: 'Sellaloo',
         lang: 'es',
-        theme_color: '#0b6b5d',
-        background_color: '#ffffff',
+        theme_color: '#1d3bb3',
+        background_color: '#f3f4f7',
         display: 'standalone',
         // Los PNG salen de icon.svg, a sangre completa: el sistema recorta la forma.
         icons: [

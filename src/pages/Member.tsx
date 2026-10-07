@@ -99,7 +99,7 @@ export default function Member() {
           {pending.map((c) => (
             <div key={c.id} className="row">
               <span>{c.reward}</span>
-              <button disabled={busy} onClick={() => redeem(c.id)}>Canjear</button>
+              <button className="reward" disabled={busy} onClick={() => redeem(c.id)}>Canjear</button>
             </div>
           ))}
         </section>

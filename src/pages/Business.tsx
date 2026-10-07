@@ -210,7 +210,7 @@ export default function Business() {
                 {m.name}
                 {m.rewardsPending > 1 && ` (${m.rewardsPending})`}
               </span>
-              <button disabled={busy} onClick={() => redeem(m)}>Entregar</button>
+              <button className="reward" disabled={busy} onClick={() => redeem(m)}>Entregar</button>
             </div>
           ))}
         </section>

@@ -99,6 +99,9 @@ tests/rules/             tests de firestore.rules y storage.rules contra el emul
   - 0 instancias mínimas.
 - 2026-10-01 — Coste: se desarrolla en los emuladores; Blaze solo se activa al lanzar, con alertas
   de presupuesto. Las Functions tienen `maxInstances: 10`.
+- 2026-10-07 — Estilo visual «Tinta» (ver `docs/diseno.md`). Lo eligió el usuario entre varias propuestas:
+  - tinta azul `#1d3bb3`, y el rojo `#c2361f` solo para los premios;
+  - Atkinson Hyperlegible y Bricolage Grotesque, servidas desde la app (nunca desde Google Fonts).
 
 ## Documentos relacionados
 
@@ -106,6 +109,7 @@ tests/rules/             tests de firestore.rules y storage.rules contra el emul
 - `docs/roadmap.md`: fases del MVP, criterios de «hecho» y decisiones.
 - `docs/producto/funcionalidades-mvp.md`: funcionalidades del MVP (transcripción del docx).
 - `docs/arquitectura.md`: stack, decisiones de arquitectura y desarrollo local.
+- `docs/diseno.md`: estilo visual «Tinta» (colores, tipografía y componentes).
 - `docs/modelo-datos.md`: colecciones, reglas e índices de Firestore.
 - `docs/costes.md`: planes de Firebase, estrategia de coste y control de SMS.
 - `docs/lanzamiento.md`: checklist para pasar a producción y lanzar el piloto.
